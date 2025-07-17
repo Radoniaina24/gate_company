@@ -1,0 +1,30 @@
+[
+  {
+    "firstName": "Alice",
+    "lastName": "Durand",
+    "email": "alice.durand@example.com",
+    "password": "Password123!",
+    "role": "manager"
+  },
+  {
+    "firstName": "Bob",
+    "lastName": "Lefebvre",
+    "email": "bob.lefebvre@example.com",
+    "password": "SecurePass456$",
+    "role": "employee"
+  },
+  {
+    "firstName": "Charles",
+    "lastName": "Martin",
+    "email": "charles.martin@example.com",
+    "password": "MyAdminPassword789*",
+    "role": "admin"
+  },
+  {
+    "firstName": "Diana",
+    "lastName": "Petit",
+    "email": "diana.petit@example.com",
+    "password": "AnotherStrongPassword!",
+    "role": "employee"
+  }
+]

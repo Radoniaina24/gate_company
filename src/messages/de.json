@@ -1,0 +1,729 @@
+{
+  "header": {
+    "menu": {
+      "home": "Startseite",
+      "about": "Über uns",
+      "program": "Programm",
+      "contact": "Kontakt",
+      "pricing": "Pakete & Preise",
+      "account": "Mein Konto",
+      "login": "Anmelden"
+    }
+  },
+  "hero": {
+    "partnership": {
+      "ministrySupport": "Unter der Schirmherrschaft des Ministeriums für Arbeit, Beschäftigung und öffentlichen Dienst Madagaskar.",
+      "partnership": "In Partnerschaft mit der Direktion für Berufliche Migration Madagaskar"
+    },
+    "eventBadge": {
+      "date": "19. & 20. September 2025",
+      "location": "Hotel Carlton Antananarivo"
+    },
+    "title": "Carrefour de l’Emploi",
+    "country": "Madagaskar",
+    "year": "2025",
+    "typing": [
+      "Sie wählen.",
+      "Wir bereiten vor.",
+      "Sie erhalten einen einsatzbereiten Mitarbeiter."
+    ],
+    "candidate": {
+      "title": "Kandidatenregistrierung",
+      "description": "Finden Sie Ihren idealen Job"
+    },
+    "recruiter": {
+      "title": "Registrierung für Arbeitgeber",
+      "description": "Rekrutieren Sie Ihre Talente"
+    },
+    "brochure": {
+      "title": "Broschüre herunterladen",
+      "description": "Umfassender Leitfaden zur Veranstaltung"
+    }
+  },
+  "heroTest": {
+    "hotelTitle": "Hotel Carlton Antananarivo",
+    "hotelAddress": "Anosy, Antananarivo, Madagaskar",
+    "highlight": "Eine Großveranstaltung in 5‑Sterne‑Umgebung",
+    "description1": "Das Carrefour de l’Emploi – Madagaskar 2025 findet im prestigeträchtigen Carlton Madagaskar statt, einem historischen 5‑Sterne‑Hotel im Herzen der Innenstadt von Antananarivo.",
+    "description2": "Mit strategischer Lage im Geschäftsviertel und am Ufer des Lac Anosy bietet das Carlton eine außergewöhnliche Kombination aus Luxus, Zugänglichkeit und Professionalität.",
+    "description3": "Dieser Veranstaltungshauptort beherbergt regelmäßig internationale, diplomatische und wirtschaftliche Großveranstaltungen auf höchstem Niveau.",
+    "mainTitle": "Carrefour de l’Emploi – Madagaskar 2025",
+    "mainDescription": "ist ein nationales und internationales Direktrekrutierungsformat, das Unternehmen—lokale und ausländische—mit zuverlässiger Arbeitskraftversorgung und qualifizierten madagassischen Talenten verbindet. Diese Talente werden identifiziert, gestärkt und bis zu ihrer langfristigen Integration in die Partnerorganisationen begleitet.",
+    "organizedBy": "Organisiert von",
+    "knowGroup": "Die Gruppe kennenlernen",
+    "eventDays": "Veranstaltungstage",
+    "turnkey": "Schlüsselfertig",
+    "directConnection": "Direktverbindung",
+    "talentRecruiters": "Talente × Arbeitgeber",
+    "internationalEvent": "Internationale Veranstaltung"
+  },
+  "unique": {
+    "badge": "Exzellenz",
+    "title": "Was uns",
+    "highlight": "EINZIGARTIG macht",
+    "features": [
+      {
+        "title": "Sie wählen die Profile",
+        "description": "Wählen Sie die Kandidaten aus, die perfekt zu Ihren Kriterien und Ihrer Unternehmenskultur passen.",
+        "highlight": "Personalisierte Auswahl"
+      },
+      {
+        "title": "Wir bilden sie aus und bereiten sie vor",
+        "description": "Individuell zugeschnittene Ausbildung gemäß Ihren spezifischen Anforderungen für eine erfolgreiche Integration.",
+        "highlight": "Maßgeschneiderte Schulung"
+      },
+      {
+        "title": "Einsatzbereite Fachkräfte",
+        "description": "Ihre neuen Talente kommen einsatzfähig und motiviert, um sofort einen Beitrag zu leisten.",
+        "highlight": "Garantierte Leistung"
+      },
+      {
+        "title": "Lebensläufe nach Bedarf garantiert",
+        "description": "Zufriedenheit garantiert mit Profilen, die Ihren speziellen Anforderungen entsprechen.",
+        "highlight": "100 % Zufriedenheit"
+      }
+    ],
+    "cta": {
+      "title": "Bereit, Ihre Rekrutierung zu transformieren?",
+      "description": "Erfahren Sie, wie unser einzigartiger Ansatz Ihr Team revolutionieren kann",
+      "button": "Jetzt starten"
+    }
+  },
+  "targetCountries": {
+    "badge": "Internationale Präsenz",
+    "title": "Unsere prioritären Zielländer",
+    "regions": {
+      "ocean": "Indischer Ozean",
+      "international": "International",
+      "total": "7 abgedeckte Länder"
+    },
+    "countries": {
+      "mu": "Mauritius",
+      "sc": "Seychellen",
+      "km": "Komoren",
+      "mg": "Madagaskar",
+      "ca": "Kanada",
+      "de": "Deutschland",
+      "be": "Belgien"
+    },
+    "subtitle": {
+      "mg": "lokale Unternehmen & Tochtergesellschaften"
+    }
+  },
+  "countdown": {
+    "title": "Countdown",
+    "targetDate": "19. September 2025",
+    "location": "Madagaskar",
+    "expiredTitle": "🎉 Heutiger Tag erreicht!",
+    "expiredMessage": "Der 19. September 2025 ist endlich da!",
+    "units": {
+      "days": "Tage",
+      "hours": "Stunden",
+      "minutes": "Minuten",
+      "seconds": "Sekunden"
+    }
+  },
+  "magazine": {
+    "sectionTitle": "Verfolgen Sie in Echtzeit Afrikas Entwicklung",
+    "tagline": "GATE OF AFRICA MAGAZIN",
+    "headline": "Afrika live, Nachrichten die bewegen.",
+    "description": "Entdecken Sie die wirtschaftlichen, politischen und sozialen Entwicklungen des afrikanischen Kontinents mit dem führenden Online‑Medium der Gate Africa‑Gruppe.",
+    "highlights": [
+      "Verfolgt von Millionen",
+      "Panafrikanische Berichterstattung",
+      "Aktuelle News in Echtzeit"
+    ],
+    "cta": "Besuchen Sie GateOfAfrica.com",
+    "caption": "Ihre führende Informationsquelle zu Afrika"
+  },
+  "about": {
+    "sectionHeader": {
+      "badge": "Internationale Veranstaltung",
+      "title1": "Über",
+      "title2": "die Veranstaltung"
+    },
+    "heading": "Carrefour de l’Emploi 2025",
+    "intro": {
+      "paragraph": "Eine <strong>Direktrekrutierungsplattform</strong>, die internationalen Unternehmen ermöglicht, <highlight>qualifizierte madagassische Talente</highlight> effizient auszuwählen, auszubilden und einzustellen.",
+      "tagline": "Umfassende und innovative Lösung"
+    },
+    "support": {
+      "title": "Unsere umfassende Begleitung",
+      "paragraph": "Unsere Teams begleiten den gesamten Prozess: Auswahl, beschleunigte Schulung, administrative Unterstützung und Betreuung bis zur endgültigen Integration."
+    },
+    "process": {
+      "title": "4‑Schritte‑Prozess",
+      "steps": [
+        {
+          "title": "Auswahl",
+          "description": "Identifizierung und Bewertung der besten madagassischen Talente"
+        },
+        {
+          "title": "Schulung",
+          "description": "Beschleunigtes und personalisiertes Ausbildungsprogramm"
+        },
+        {
+          "title": "Administrative Unterstützung",
+          "description": "Vollständige Abwicklung der administrativen Verfahren"
+        },
+        {
+          "title": "Endgültige Integration",
+          "description": "Individuelle Begleitung bis zur erfolgreichen Integration"
+        }
+      ]
+    },
+    "sectors": {
+      "title": "Unser Pool an <span>Talenten</span>",
+      "btp": {
+        "title": "Bau, Konstruktion & Instandhaltung",
+        "description": "Maurer, Elektriker, Klempner, Klimatechniker, Schweißer, Tischler, Maschinenfahrer, Bauleiter usw."
+      },
+      "tourism": {
+        "title": "Tourismus, Hotellerie, Gastronomie & Freizeit",
+        "description": "Rezeptionisten, Kellner, Köche, Pizzabäcker, Konditoren, Barkeeper, Housekeeping, Reiseanimateure, Spa‑Therapeuten usw."
+      },
+      "transport": {
+        "title": "Transport & Logistik",
+        "description": "Lkw‑/Kraftfahrer, Auslieferungsfahrer, Gabelstaplerfahrer, Lageristen, Logistikplaner, Transit‑ und Zollagenten usw."
+      },
+      "health": {
+        "title": "Gesundheit, Pflege & persönliche Dienstleistungen",
+        "description": "Ärzte, Krankenpfleger, Pflegeassistenten, Hebammen, Rettungssanitäter, Träger, medizinische Sekretär*innen, Reinigungskräfte im Krankenhaus usw."
+      },
+      "admin": {
+        "title": "Verwaltung, Buchhaltung & Management",
+        "description": "Führungskräfte, Finanzverantwortliche, Prüfer, Verwaltungsassistent*innen, Buchhalter, HR‑Mitarbeitende, Lagerverwalter, Sekretär*innen, Datenerfasser*innen, Rechnungsbearbeiter*innen usw."
+      },
+      "support": {
+        "title": "Kundenservice, Support & Call Center",
+        "description": "Kundenberater FR/EN, Back‑Office‑Mitarbeitende, IT‑Supporttechniker, interkulturelle Mediator*innen, Trainer*innen für Kundenkommunikation usw."
+      },
+      "it": {
+        "title": "IT, Digital & Technologie",
+        "description": "Web‑ und Mobile‑Entwickler, Netzwerk‑ & Systemtechniker, Datenanalyst*innen, Cybersicherheitsexpert*innen, Cloud‑Administrator*innen, KI‑Ingenieur*innen usw."
+      },
+      "events": {
+        "title": "Veranstaltungen, Audiovisuelle Medien & Kunst",
+        "description": "Licht‑, Ton‑ und Videotechniker, Veranstaltungsregisseure, Event‑Dekorateure, DJs, Musiker, Animateur*innen, Fotograf*innen, Videograf*innen usw."
+      }
+    },
+    "programs": [
+      {
+        "title": "Berufliche Mobilität – Deutschland",
+        "items": [
+          "Au-pair (Sprachaufenthalt in Gastfamilie)",
+          "Freiwilligendienst FSJ / BFD (Soziales, Gesundheit, Bildung usw.)",
+          "Ausbildung (duale Berufsausbildung: Gesundheit, Bau, IT, Hotellerie, Logistik usw.)",
+          "Praktika & Hochschulstudium (Praktikum, Studium)",
+          "Direktrekrutierung & Anerkennung von Abschlüssen (Pflegekräfte, IT, technische Berufe usw.)",
+          "Engpassberufe (Pflege, Digitales, Instandhaltung, Logistik, Gastronomie usw.)"
+        ]
+      },
+      {
+        "title": "Vielfältige und spezialisierte Profile nach Marktbedarf",
+        "items": [
+          "Immobilienmakler",
+          "Sicherheitskräfte & Hundeführer",
+          "Industriereinigungskräfte",
+          "Schädlingsbekämpfer und Hygienefachkräfte",
+          "Garten- und Landschaftspfleger",
+          "Tiermedizinische Fachangestellte und Tierpfleger",
+          "Umwelttechniker und Abfallmanagementspezialisten",
+          "Verwaltungsmitarbeiter in Kommunen und öffentlichen Diensten",
+          "Sprachlehrer und Sprachtrainer",
+          "Professionelle Dolmetscher (FR, EN, DE, AR usw.)"
+        ]
+      }
+    ],
+    "live": {
+      "cards": [
+        {
+          "title": "Live-Casting – Galaabend am 23. August",
+          "description": "Ein Live-Casting findet während des Galaabends am 23. August statt – für Recruiter, die an professionellen Künstlern, Entertainern und Musikern interessiert sind."
+        },
+        {
+          "title": "Live-Musikdarbietungen",
+          "description": "Live-Auftritte von professionellen Musikern: Jazz, Klassik, Pop und Weltmusik. Eine einzigartige Gelegenheit für Recruiter, authentische musikalische Talente in einem intimen Rahmen zu entdecken."
+        },
+        {
+          "title": "DJ- & Musikproduktions-Showcase",
+          "description": "Live-Präsentationen von professionellen DJs und Musikproduzenten. Echtzeit-Mixing, Beat-Erstellung und Sounddesign für Events, Hochzeiten und Firmenfeiern."
+        },
+        {
+          "title": "Musikgruppen & Formationen",
+          "description": "Präsentation kompletter Musikgruppen: Orchester, Bands, akustische Duos und spezialisierte Ensembles. Live-Demonstrationen, abgestimmt auf die spezifischen Anforderungen der anwesenden Recruiter."
+        }
+      ]
+    },
+    "features": {
+      "international": {
+        "title": "International",
+        "description": "Direkte Verbindung mit ausländischen Unternehmen"
+      },
+      "talents": {
+        "title": "Talente",
+        "description": "Auswahl der besten madagassischen Profile"
+      },
+      "efficient": {
+        "title": "Effizient",
+        "description": "Optimierter Prozess und umfassende Betreuung"
+      }
+    }
+  },
+  "program": {
+    "label": "Veranstaltungsprogramm",
+    "title": "Programm",
+    "highlight": "Detailliert",
+    "subtitle": "Entdecken Sie das vollständige Programm unserer zwei intensiven Rekrutierungstage",
+    "ctaTitle": "Sichern Sie sich Ihren Platz",
+    "ctaText": "Nehmen Sie an diesem außergewöhnlichen Recruiting-Event teil und bringen Sie Ihre Karriere auf das nächste Level",
+    "ctaCandidat": "Kandidatenregistrierung",
+    "ctaRecruteur": "Arbeitgeberregistrierung",
+    "days": [
+      {
+        "day": "Tag 1",
+        "date": "19. September 2025",
+        "events": [
+          {
+            "time": "08:00",
+            "title": "Empfang und Aufbau der Arbeitgeberstände",
+            "icon": "map"
+          },
+          { "time": "08:30", "title": "Offizielle Eröffnung", "icon": "star" },
+          {
+            "time": "09:00 - 10:30",
+            "title": "Rekrutierungssitzungen & Vorstellungsgespräche",
+            "icon": "users"
+          },
+          { "time": "10:30 - 10:45", "title": "Kaffeepause", "icon": "coffee" },
+          {
+            "time": "10:45 – 12:30",
+            "title": "Rekrutierungssitzungen & Vorstellungsgespräche (Fortsetzung)",
+            "icon": "users"
+          },
+          {
+            "time": "12:30 - 14:00",
+            "title": "Gourmet-Buffet im 5-Sterne-Hotel Carlton",
+            "icon": "star"
+          },
+          {
+            "time": "14:00 - 17:00",
+            "title": "Rekrutierungssitzungen & Vorstellungsgespräche (Fortsetzung)",
+            "icon": "users"
+          }
+        ]
+      },
+      {
+        "day": "Tag 2",
+        "date": "20. September 2025",
+        "events": [
+          {
+            "time": "08:30 - 10:00",
+            "title": "Rekrutierungssitzungen & Vorstellungsgespräche",
+            "icon": "users"
+          },
+          { "time": "10:00 - 10:15", "title": "Kaffeepause", "icon": "coffee" },
+          {
+            "time": "10:15 - 12:30",
+            "title": "Rekrutierungssitzungen & Vorstellungsgespräche (Fortsetzung)",
+            "icon": "users"
+          },
+          {
+            "time": "12:30 - 14:00",
+            "title": "Gourmet-Buffet im 5-Sterne-Hotel Carlton",
+            "icon": "star"
+          },
+          {
+            "time": "14:00 - 17:00",
+            "title": "Rekrutierungssitzungen & Vorstellungsgespräche (Fortsetzung)",
+            "icon": "users"
+          },
+          {
+            "time": "19:00",
+            "title": "VIP-Galaabend – Networking, künstlerische Darbietungen, Showcases, Aufführungen",
+            "icon": "star"
+          }
+        ]
+      }
+    ]
+  },
+  "contact": {
+    "validation": {
+      "required": "Dieses Feld ist erforderlich",
+      "invalidEmail": "Ungültige E-Mail-Adresse"
+    },
+    "form": {
+      "title": "Schreiben Sie uns",
+      "subtitle": "Füllen Sie das untenstehende Formular aus – wir melden uns schnellstmöglich bei Ihnen.",
+      "fields": {
+        "lastName": "Nachname",
+        "firstName": "Vorname",
+        "email": "E-Mail",
+        "address": "Adresse",
+        "message": "Nachricht"
+      },
+      "placeholders": {
+        "lastName": "Ihr Nachname",
+        "firstName": "Ihr Vorname",
+        "email": "ihre@email.com",
+        "address": "Ihre vollständige Adresse",
+        "message": "Schreiben Sie hier Ihre Nachricht..."
+      },
+      "submit": "Nachricht senden",
+      "submitting": "Wird gesendet...",
+      "sending": "Nachricht wird übermittelt...",
+      "success": "Nachricht erfolgreich gesendet!",
+      "error": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
+    },
+    "info": {
+      "title": "Kontaktinformationen",
+      "email": {
+        "title": "Geschäftliche E-Mail",
+        "address": "contact@carrefour-emploi.com",
+        "response": "Antwort innerhalb von 24 Stunden"
+      },
+      "phone": {
+        "title": "Telefon",
+        "numbers": "+261 37 07 777 07\n+230 5 488-4377",
+        "hours": "Mo - Fr: 08:00 - 17:00"
+      },
+      "schedule": {
+        "title": "Öffnungszeiten",
+        "days": "Montag - Freitag",
+        "time": "08:00 - 17:00"
+      },
+      "address": {
+        "title": "Adresse",
+        "street": "Nanisana",
+        "city": "Antananarivo, Madagaskar"
+      }
+    }
+  },
+  "candidate": {
+    "hero": {
+      "title": "Jobforum",
+      "subtitle": "Madagaskar 2025"
+    },
+    "description": {
+      "question": "Sind Sie auf der Suche nach lokalen oder internationalen Karrieremöglichkeiten?",
+      "content": "Nehmen Sie am Jobforum – Madagaskar 2025 teil und führen Sie direkte Bewerbungsgespräche mit Recruitern aus verschiedenen Ländern und Branchen!"
+    },
+    "profiles": {
+      "title": "Gesuchte Profile",
+      "levels": "Alle Ausbildungsniveaus",
+      "experience": "Berufsanfänger oder erfahrene Fachkräfte in verschiedenen Bereichen:",
+      "domains": [
+        "Technologie",
+        "Gesundheit",
+        "Hotellerie",
+        "Bauwesen",
+        "Sicherheit",
+        "Kommunikation",
+        "Eventmanagement"
+      ],
+      "more": "und mehr..."
+    },
+    "advantages": {
+      "title": "Vorteile",
+      "list": [
+        "Zugang zu exklusiven Stellenangeboten",
+        "Möglichkeit zur Vorauswahl vor der Veranstaltung",
+        "Coaching und Vorbereitung auf Bewerbungsgespräche",
+        "Teilnahme am Galaabend für künstlerische Talente (Live-Castings)"
+      ]
+    },
+    "cta": {
+      "button": "Am Jobforum 2025 teilnehmen"
+    }
+  },
+  "recruiter": {
+    "hero": {
+      "title": "Recruiter-Bereich",
+      "subtitle": "Jobforum – Madagaskar 2025",
+      "description": "Sind Sie ein Arbeitgeber? Kontaktieren Sie uns jetzt, um mehr über unsere {tarifs} und {packs} zu erfahren – ideal für Ihren Bedarf an {recrutement}.",
+      "tarifs": "individuelle Tarife",
+      "packs": "maßgeschneiderte Pakete",
+      "recrutement": "lokaler oder internationaler Personalbeschaffung",
+      "cta": "Kontaktieren Sie uns für Ihre Konditionen",
+      "sendEmail": "E-Mail senden"
+    },
+    "benefits": {
+      "qualifiedTalents": "Qualifizierte Talente",
+      "localInternational": "Lokal & International",
+      "customPacks": "Individuelle Pakete",
+      "premiumService": "Premium-Service"
+    },
+    "whyParticipate": {
+      "title": "Warum am Jobforum teilnehmen?",
+      "directAccess": {
+        "title": "Direkter Zugang zu Talenten",
+        "description": "Treffen Sie qualifizierte Kandidaten persönlich in einem professionellen Umfeld"
+      },
+      "customSolutions": {
+        "title": "Individuelle Lösungen",
+        "description": "Maßgeschneiderte Pakete, die auf Ihre spezifischen Rekrutierungsbedürfnisse abgestimmt sind"
+      },
+      "expertSupport": {
+        "title": "Fachkundige Unterstützung",
+        "description": "Profitieren Sie von unserer Expertise zur Optimierung Ihrer Einstellungsprozesse"
+      }
+    }
+  },
+  "form": {
+    "form1": {
+      "personal": {
+        "title": "Persönliche Informationen",
+        "lastName": "Nachname",
+        "firstName": "Vorname",
+        "email": "E-Mail",
+        "confirmEmail": "E-Mail bestätigen",
+        "phone": "Telefon",
+        "dateOfBirth": "Geburtsdatum",
+        "nationality": "Nationalität",
+        "address": "Adresse",
+        "city": "Stadt",
+        "postalCode": "Postleitzahl",
+        "country": "Land"
+      },
+      "placeholders": {
+        "lastName": "Ihr Nachname",
+        "firstName": "Ihr Vorname",
+        "email": "ihre.email@beispiel.com",
+        "confirmEmail": "E-Mail bestätigen",
+        "phone": "+261 XX XX XXX XX",
+        "nationality": "Ihre Nationalität",
+        "address": "Ihre Adresse",
+        "city": "Ihre Stadt",
+        "postalCode": "Postleitzahl",
+        "country": "Ihr Land"
+      },
+      "validation": {
+        "required": {
+          "lastName": "Nachname ist erforderlich",
+          "firstName": "Vorname ist erforderlich",
+          "email": "E-Mail ist erforderlich",
+          "confirmEmail": "E-Mail-Bestätigung ist erforderlich",
+          "phone": "Telefonnummer ist erforderlich",
+          "dateOfBirth": "Geburtsdatum ist erforderlich",
+          "nationality": "Nationalität ist erforderlich",
+          "address": "Adresse ist erforderlich",
+          "city": "Stadt ist erforderlich",
+          "postalCode": "Postleitzahl ist erforderlich",
+          "country": "Land ist erforderlich"
+        },
+        "invalid": {
+          "email": "Ungültige E-Mail-Adresse",
+          "emailMismatch": "E-Mail-Adressen müssen übereinstimmen"
+        }
+      }
+    },
+    "form3": {
+      "labels": {
+        "sector": "Branche",
+        "category": "Kategorie"
+      },
+      "placeholders": {
+        "sector": "Wählen Sie eine Branche",
+        "category": "Wählen Sie eine Kategorie"
+      },
+      "validation": {
+        "sectorRequired": "Die Auswahl einer Branche ist erforderlich",
+        "categoryRequired": "Die Auswahl einer Kategorie ist erforderlich"
+      },
+      "sectors": {
+        "technologies_btp": "Technologie & Bauwesen",
+        "tourisme_sante_services": "Tourismus, Gesundheit & Dienstleistungen",
+        "communication_gestion": "Kommunikation & Verwaltung",
+        "evenementiel_artistique": "Event- & Kunstbereich"
+      },
+      "categories": {
+        "tech": {
+          "dev_web_ai": "Webentwickler, KI, Cybersicherheit, Robotik",
+          "techniciens": "Elektriker, Klimatechniker, Klempner, Schweißer"
+        },
+        "tourisme": {
+          "hotel": "Rezeption, Küche, Spa, Zimmerreinigung",
+          "medical": "Krankenpfleger, Pflegehilfen, Sanitäter",
+          "logistique": "Fahrer, Logistikmitarbeiter"
+        },
+        "comm": {
+          "accueil": "Dreisprachiger Kundenservice, Callcenter",
+          "rh": "Sekretärinnen, HR-Assistenten, Community Manager"
+        },
+        "event": {
+          "technique": "Licht-/Ton-/Videotechniker, Bühnenmanager",
+          "artistes": "DJs, Musiker, Moderatoren, Live-Künstler"
+        }
+      }
+    },
+    "form5": {
+      "fields": {
+        "photo": "Aktuelles Foto",
+        "cv": "Lebenslauf (CV)",
+        "degree": "Kopien der erworbenen Abschlüsse",
+        "coverLetter": "Motivationsschreiben"
+      },
+      "helpers": {
+        "photo": "Nur Bildformate (jpg, jpeg, png, webp), maximale Größe: 5 MB",
+        "pdf": "Nur PDF-Format, maximale Größe: 5 MB"
+      },
+      "validation": {
+        "photo": {
+          "required": "Ein aktuelles Foto ist erforderlich"
+        },
+        "cv": {
+          "required": "Der Lebenslauf ist erforderlich"
+        },
+        "degree": {
+          "required": "Abschlussnoten oder -kopien sind erforderlich"
+        },
+        "coverLetter": {
+          "required": "Das Motivationsschreiben ist erforderlich"
+        },
+        "pdfType": "Die Datei muss ein PDF sein",
+        "pdfSize": "Maximale Größe: 5 MB",
+        "imageType": "Die Datei muss ein Bild sein (jpg, jpeg, png, webp)",
+        "imageSize": "Maximale Größe: 5 MB"
+      }
+    },
+    "form4": {
+      "labels": {
+        "password": "Passwort",
+        "retype": "Passwort bestätigen"
+      },
+      "placeholders": {
+        "password": "Ihr Passwort",
+        "retype": "Bestätigen Sie Ihr Passwort"
+      },
+      "validation": {
+        "password": {
+          "required": "Das Passwort ist erforderlich",
+          "min": "Das Passwort muss mindestens 6 Zeichen lang sein."
+        },
+        "retype": {
+          "required": "Die Bestätigung des Passworts ist erforderlich.",
+          "match": "Die Passwörter müssen übereinstimmen.",
+          "min": "Die Bestätigung muss mindestens 6 Zeichen lang sein."
+        }
+      }
+    },
+    "confirmation": {
+      "title": "Zusammenfassung Ihrer Bewerbung",
+      "subtitle": "Bitte überprüfen Sie die folgenden Angaben, bevor Sie Ihre Bewerbung absenden.",
+      "sections": {
+        "personal": "Persönliche Angaben",
+        "sector": "Ausgewählter Sektor",
+        "documents": "Hochgeladene Dokumente"
+      },
+      "fields": {
+        "lastName": "Nachname",
+        "firstName": "Vorname",
+        "email": "E-Mail",
+        "phone": "Telefon",
+        "birthdate": "Geburtsdatum",
+        "nationality": "Staatsangehörigkeit",
+        "address": "Adresse",
+        "country": "Land",
+        "city": "Stadt",
+        "postalCode": "Postleitzahl",
+        "sector": "Sektor",
+        "category": "Kategorie"
+      },
+      "documents": {
+        "photo": "Aktuelles Foto",
+        "cv": "Lebenslauf (CV)",
+        "degree": "Abschlüsse",
+        "coverLetter": "Motivationsschreiben"
+      },
+      "consent": {
+        "text": "Ich bestätige die Richtigkeit der angegebenen Informationen und akzeptiere die",
+        "terms": "Allgemeinen Geschäftsbedingungen",
+        "and": "und die",
+        "privacy": "Datenschutzerklärung"
+      },
+      "validation": {
+        "required": "Sie müssen die Bedingungen akzeptieren, um fortzufahren"
+      }
+    },
+    "buttons": {
+      "previous": "Zurück",
+      "next": "Weiter",
+      "submit": "Meine Bewerbung absenden"
+    },
+    "progress": {
+      "personalInfo": "Persönliche Angaben",
+      "sectorChoice": "Sektorauswahl",
+      "documents": "Dokumente",
+      "password": "Passwort",
+      "confirmation": "Bestätigung"
+    },
+    "modal": {
+      "title": "Bewerbung erfolgreich gesendet!",
+      "nextSteps": "Nächste Schritte",
+      "step1": "Ihre Unterlagen werden von unserem Team überprüft.",
+      "step2": "Sie erhalten eine E-Mail-Benachrichtigung, sobald Ihre Bewerbung bestätigt wurde (prüfen Sie auch den Spam-Ordner)",
+      "backHome": "Zur Startseite"
+    }
+  },
+  "upload": {
+    "clickToUpload": "Klicken Sie, um eine Datei auszuwählen (PDF oder Bild)",
+    "maxSize": "Maximale Größe: {size} MB",
+    "tooLarge": "Datei ist zu groß"
+  },
+  "recruteur": {
+    "form": {
+      "title": "Registrierung für Arbeitgeber",
+      "lastName": "Nachname",
+      "firstName": "Vorname",
+      "company": "Unternehmen",
+      "email": "E-Mail",
+      "country": "Land",
+      "password": "Passwort",
+      "confirmPassword": "Passwort bestätigen",
+      "submit": "Registrieren",
+      "loading": "Registrierung läuft...",
+      "already_registered": "Bereits registriert?",
+      "login": "Anmelden",
+      "terms": "Mit der Registrierung akzeptieren Sie unsere Nutzungsbedingungen und Datenschutzrichtlinie.",
+      "placeholders": {
+        "lastName": "Ihr Nachname",
+        "firstName": "Ihr Vorname",
+        "company": "Name des Unternehmens",
+        "email": "ihr@email.com",
+        "country": "Land auswählen",
+        "password": "Mindestens 6 Zeichen",
+        "confirmPassword": "Bestätigen Sie Ihr Passwort"
+      },
+      "errors": {
+        "required": "Dieses Feld ist erforderlich",
+        "invalid_email": "Ungültige E-Mail-Adresse",
+        "password_min": "Das Passwort muss mindestens 6 Zeichen lang sein",
+        "password_match": "Die Passwörter stimmen nicht überein",
+        "recaptcha_required": "Bitte bestätigen Sie das reCAPTCHA",
+        "default": "Ein Fehler ist aufgetreten"
+      }
+    }
+  },
+  "auth": {
+    "form": {
+      "email": "E-Mail",
+      "password": "Passwort",
+      "submit": "Anmelden",
+      "loading": "Anmeldung läuft...",
+      "no_account": "Sie haben noch kein Konto? Jetzt registrieren",
+      "candidate": "Kandidat",
+      "recruiter": "Arbeitgeber",
+      "placeholders": {
+        "email": "ihr@email.com",
+        "password": "Ihr Passwort"
+      },
+      "errors": {
+        "required": "Dieses Feld ist erforderlich",
+        "invalid_email": "Ungültige E-Mail-Adresse",
+        "password_min": "Das Passwort muss mindestens 6 Zeichen lang sein",
+        "default": "Ein Fehler ist aufgetreten",
+        "unknown_role": "Unbekannte Benutzerrolle"
+      }
+    }
+  }
+}
