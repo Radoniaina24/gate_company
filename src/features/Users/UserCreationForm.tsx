@@ -1,11 +1,26 @@
 "use client";
 import { FormValues, InputField } from "@/components/Form/InputField";
 import { SelectField } from "@/components/Form/SelectField";
+import MultiSelect from "@/components/Form/SelectMultiple";
 import { useAddUserMutation } from "@/redux/api/userApi";
 import { useFormik } from "formik";
-import { Mail, Lock, User, UserCircle, UserCog, User2Icon } from "lucide-react";
+import {
+  Mail,
+  Lock,
+  User,
+  UserCircle,
+  UserCog,
+  User2Icon,
+  AlertCircle,
+} from "lucide-react";
 import { useState } from "react";
 import * as Yup from "yup";
+
+const OPTIONS = [
+  { label: "Manager", value: "manager" },
+  { label: "Admin", value: "admin" },
+  { label: "Employee", value: "employee" },
+];
 
 const UserCreationSchema = Yup.object().shape({
   lastName: Yup.string().required("Le nom est requis"),
@@ -14,7 +29,9 @@ const UserCreationSchema = Yup.object().shape({
   password: Yup.string()
     .min(8, "Le mot de passe doit contenir au moins 8 caractères")
     .required("Mot de passe requis"),
-  role: Yup.string().required("Rôle requis"),
+  roles: Yup.array()
+    .min(1, "Sélectionner au moins un rôle")
+    .of(Yup.string().oneOf(OPTIONS.map((o) => o.value))),
 });
 
 export const UserCreationForm = () => {
@@ -26,10 +43,10 @@ export const UserCreationForm = () => {
       firstName: "",
       email: "",
       password: "",
-      role: "",
+      roles: [],
     },
     validationSchema: UserCreationSchema,
-    onSubmit: async (values, { setSubmitting }) => {
+    onSubmit: async (values, { setSubmitting, resetForm }) => {
       setSubmitting(true);
       try {
         const response = await addUser({
@@ -37,9 +54,10 @@ export const UserCreationForm = () => {
           firstName: values.firstName,
           email: values.email,
           password: values.password,
-          role: values.role,
+          roles: values.roles,
         }).unwrap();
         console.log(response);
+        resetForm();
       } catch (error: any) {
         console.log(error);
       } finally {
@@ -47,12 +65,6 @@ export const UserCreationForm = () => {
       }
     },
   });
-
-  const roleOptions = [
-    { value: "admin", label: "Administrateur" },
-    { value: "manager", label: "Manager " },
-    { value: "employee", label: "Employé" },
-  ];
 
   return (
     <div className=" mt-30">
@@ -99,13 +111,28 @@ export const UserCreationForm = () => {
             formik={formik}
           />
 
-          <SelectField
+          {/* <SelectField
             name="role"
             label="Rôle"
             icon={User}
             formik={formik}
             options={roleOptions}
-          />
+          /> */}
+          <div className="space-y-2">
+            <h1 className="text-red-700 text-sm">Roles</h1>
+            <MultiSelect
+              options={OPTIONS}
+              placeholder="Choisir un ou plusieurs rôles"
+              value={formik.values.roles}
+              onChange={(vals) => formik.setFieldValue("roles", vals)}
+              error={Boolean(formik.errors.roles && formik.touched.roles)}
+            />
+            {formik.errors.roles && formik.touched.roles && (
+              <div className="text-red-600 text-sm flex gap-1 items-center ">
+                <AlertCircle className="h-4 w-4" /> {formik.errors.roles}
+              </div>
+            )}
+          </div>
 
           <button
             type="submit"

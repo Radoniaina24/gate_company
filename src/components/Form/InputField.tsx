@@ -13,7 +13,7 @@ export interface FormValues {
   country?: string;
   email?: string;
   recaptcha?: string;
-  role?: string;
+  roles?: string[];
 }
 
 interface InputFieldProps {

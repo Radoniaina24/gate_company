@@ -32,7 +32,7 @@ export const SelectCountryField: React.FC<SelectCountryFieldProps> = ({
         <CountryDropdown
           id={name}
           name={name}
-          value={formik.values[name] || ""}
+          value={formik.values[name] as string}
           onChange={(val: string) => formik.setFieldValue(name, val)}
           //   onBlur={() => formik.setFieldTouched(name, true)}
           className={`w-full pl-10 pr-4 py-3 border rounded-lg shadow-sm appearance-none placeholder-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${
