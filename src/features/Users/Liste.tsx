@@ -21,6 +21,10 @@ import {
 } from "lucide-react";
 import AddUser from "./Action/AddUser";
 import RemoveUser from "./Action/RemoveUser";
+import { useGetAllUserQuery } from "@/redux/api/userApi";
+import RoleBadge from "./utils/RoleBadge";
+import FormSelect from "@/components/Form/FormSelect";
+import MultiSelect from "@/components/Form/SelectMultiple";
 
 interface User {
   lastName: string;
@@ -33,18 +37,45 @@ interface User {
   lastLogin?: string;
   avatar?: string;
 }
+
+export type UserRole = "employee" | "manager" | "admin";
+export interface IUser {
+  _id: string; // Identifiant unique MongoDB
+  firstName: string;
+  lastName: string;
+  email: string;
+  roles: UserRole[];
+  createdAt: string;
+  updatedAt: string;
+}
+
 type SortConfig = {
   key: keyof User;
   direction: "ascending" | "descending";
 };
 
 export const UsersTable = () => {
-  // État pour les données et les fonctionnalités du tableau
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [role, setRole] = useState<string[]>([]);
+  console.log(role);
+  const {
+    data,
+    error,
+    isLoading: loading,
+  } = useGetAllUserQuery({ search: searchTerm, roles: role });
+  // console.log(data?.users?.meta?.total);
+  const users = data?.users?.data;
+  // console.log(role);
+  const OPTIONS = [
+    { label: "Manager", value: "manager" },
+    { label: "Admin", value: "admin" },
+    { label: "Employee", value: "employee" },
+  ];
 
+  //////////////////////////////////////////////////////
   const [sortConfig, setSortConfig] = useState<SortConfig | null>(null);
-  const [users, setUsers] = useState<User[]>([]);
+  // const [users, setUsers] = useState<User[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState<number>(8); // Modifiable maintenant
@@ -66,49 +97,6 @@ export const UsersTable = () => {
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
-  // Simuler le chargement des données
-  useEffect(() => {
-    const fetchUsers = async () => {
-      setIsLoading(true);
-      // Simuler une requête API
-      setTimeout(() => {
-        const mockUsers: User[] = Array.from({ length: 32 }, (_, i) => ({
-          id: `user-${i + 1}`,
-          lastName: `name ${i + 1}`, // 👈 ajouté
-          firstName: `firstname ${i + 1}`, // 👈 ajouté
-          email: `user${i + 1}@example.com`,
-          role: i % 3 === 0 ? "admin" : i % 2 === 0 ? "editor" : "viewer",
-          createdAt: new Date(Date.now() - i * 86400000)
-            .toISOString()
-            .split("T")[0],
-          status:
-            i % 4 === 0 ? "inactive" : i % 5 === 0 ? "suspended" : "active",
-          lastLogin: new Date(Date.now() - (i % 7) * 86400000).toISOString(),
-          avatar: `https://i.pravatar.cc/150?img=${(i % 10) + 1}`,
-        }));
-        setUsers(mockUsers);
-        setFilteredUsers(mockUsers);
-        setIsLoading(false);
-      }, 1200);
-    };
-
-    fetchUsers();
-  }, []);
-
-  // Filtrage des utilisateurs
-  useEffect(() => {
-    const filtered = users.filter((user) =>
-      Object.values(user).some(
-        (value) =>
-          value &&
-          value.toString().toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    );
-    setFilteredUsers(filtered);
-    setCurrentPage(1); // Réinitialiser à la première page lors d'un nouveau filtrage
-  }, [searchTerm, users]);
-
-  // Tri des données
   const requestSort = (key: keyof User) => {
     let direction: "ascending" | "descending" = "ascending";
     if (
@@ -144,42 +132,13 @@ export const UsersTable = () => {
   const totalPages = Math.ceil(sortedUsers.length / itemsPerPage);
 
   // Fonctions d'action
-  const handleEdit = (user: User) => {
-    console.log("Éditer:", user);
-  };
+  const handleEdit = (user: IUser) => {};
 
-  const handleDelete = (userId: string) => {
-    console.log("Supprimer:", userId);
-    setUsers(users.filter((user) => user.id !== userId));
-  };
+  const handleDelete = (userId: string) => {};
 
   const handleItemsPerPageChange = (value: number) => {
     setItemsPerPage(value);
     setCurrentPage(1); // Réinitialiser à la première page quand on change le nombre d'éléments par page
-  };
-
-  const getStatusIcon = (status: User["status"]) => {
-    switch (status) {
-      case "active":
-        return <CheckCircle className="h-4 w-4 text-emerald-500" />;
-      case "inactive":
-        return <PauseCircle className="h-4 w-4 text-amber-500" />;
-      case "suspended":
-        return <XCircle className="h-4 w-4 text-rose-500" />;
-      default:
-        return <Clock className="h-4 w-4 text-gray-500" />;
-    }
-  };
-
-  const getRoleIcon = (role: string) => {
-    switch (role) {
-      case "admin":
-        return <Shield className="h-4 w-4 text-purple-500" />;
-      case "editor":
-        return <Edit className="h-4 w-4 text-blue-500" />;
-      default:
-        return <User className="h-4 w-4 text-gray-500" />;
-    }
   };
 
   const formatDate = (dateString: string) => {
@@ -192,14 +151,14 @@ export const UsersTable = () => {
   };
 
   // Version mobile - Carte utilisateur
-  const UserCard = ({ user }: { user: User }) => (
+  const UserCard = ({ user }: { user: IUser }) => (
     <div className="bg-white rounded-lg shadow p-4 mb-3 dark:bg-gray-700">
       <div className="flex items-start space-x-4">
-        <img
+        {/* <img
           className="h-12 w-12 rounded-full object-cover"
           src={user.avatar}
           alt=""
-        />
+        /> */}
         <div className="flex-1 min-w-0">
           <div className="flex justify-between items-start">
             <div>
@@ -219,14 +178,14 @@ export const UsersTable = () => {
                 <Edit className="h-4 w-4" />
               </button>
               <button
-                onClick={() => handleDelete(user.id)}
+                onClick={() => handleDelete(user._id)}
                 className="p-1 text-gray-500 hover:text-red-600"
                 title="Supprimer"
               >
                 <Trash2 className="h-4 w-4" />
               </button>
               <button
-                onClick={() => handleDelete(user.id)}
+                onClick={() => handleDelete(user._id)}
                 className="p-1 text-gray-500 hover:text-red-600"
                 title="Supprimer"
               >
@@ -236,7 +195,7 @@ export const UsersTable = () => {
           </div>
 
           <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
-            <div className="flex items-center">
+            {/* <div className="flex items-center">
               {getRoleIcon(user.role)}
               <span className="ml-2 text-gray-700 dark:text-gray-300 capitalize">
                 {user.role}
@@ -251,7 +210,7 @@ export const UsersTable = () => {
                   ? "Inactif"
                   : "Suspendu"}
               </span>
-            </div>
+            </div> */}
             <div className="text-gray-500 dark:text-gray-400">
               <div className="text-xs">Créé le</div>
               <div>{formatDate(user.createdAt)}</div>
@@ -259,7 +218,7 @@ export const UsersTable = () => {
             <div className="text-gray-500 dark:text-gray-400">
               <div className="text-xs">Dernière connexion</div>
               <div>
-                {user.lastLogin ? formatDate(user.lastLogin) : "Jamais"}
+                {user.createdAt ? formatDate(user.createdAt) : "Jamais"}
               </div>
             </div>
           </div>
@@ -276,23 +235,16 @@ export const UsersTable = () => {
             Gestion des Utilisateurs
           </h1>
           <p className="mt-1 sm:mt-2 text-sm text-gray-600 dark:text-gray-400">
-            {filteredUsers.length} utilisateurs trouvés
+            {data?.users?.meta?.total} utilisateurs trouvés
           </p>
         </div>
         <div className="mt-3 sm:mt-0 flex space-x-2 sm:space-x-3">
-          <button
-            type="button"
-            className="inline-flex items-center px-3 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-700"
-          >
-            <Filter className="mr-2 h-4 w-4" />
-            <span className="hidden sm:inline">Filtres</span>
-          </button>
           <AddUser />
         </div>
       </div>
 
       {/* Barre de recherche */}
-      <div className="mb-6">
+      <div className="mb-6 flex gap-5 flex-wrap justify-between">
         <div className="relative rounded-lg shadow-sm">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <Search className="h-5 w-5 text-gray-400" />
@@ -300,9 +252,17 @@ export const UsersTable = () => {
           <input
             type="text"
             placeholder="Rechercher un utilisateur..."
-            className="block w-full pl-10 pr-3 py-2 sm:py-3 border border-gray-300 rounded-lg bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder-gray-400"
+            className="block w-full pl-10 pr-3 py-2 placeholder:text-sm sm:py-3 border border-gray-300 rounded-lg bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder-gray-400"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+        <div>
+          <MultiSelect
+            options={OPTIONS}
+            placeholder="Role"
+            value={role}
+            onChange={(vals) => setRole(vals)}
           />
         </div>
       </div>
@@ -310,7 +270,7 @@ export const UsersTable = () => {
       {/* Affichage mobile */}
       {isMobile ? (
         <div className="space-y-3">
-          {isLoading ? (
+          {loading ? (
             <div className="flex justify-center items-center py-8">
               <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-red-500"></div>
               <span className="ml-3 text-gray-500 dark:text-gray-400">
@@ -328,7 +288,7 @@ export const UsersTable = () => {
               </p>
             </div>
           ) : (
-            currentItems.map((user) => <UserCard key={user.id} user={user} />)
+            users.map((user: IUser) => <UserCard key={user._id} user={user} />)
           )}
         </div>
       ) : (
@@ -375,7 +335,7 @@ export const UsersTable = () => {
                     className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer dark:text-gray-300"
                     onClick={() => requestSort("status")}
                   >
-                    <div className="flex items-center">
+                    {/* <div className="flex items-center">
                       <CheckCircle className="h-4 w-4 mr-2" />
                       Statut
                       {sortConfig?.key === "status" &&
@@ -384,7 +344,7 @@ export const UsersTable = () => {
                         ) : (
                           <ChevronDown className="ml-1 h-4 w-4" />
                         ))}
-                    </div>
+                    </div> */}
                   </th>
                   <th
                     scope="col"
@@ -418,7 +378,7 @@ export const UsersTable = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-                {isLoading ? (
+                {loading ? (
                   <tr>
                     <td colSpan={6} className="px-6 py-8 text-center">
                       <div className="flex justify-center items-center space-x-2">
@@ -429,7 +389,7 @@ export const UsersTable = () => {
                       </div>
                     </td>
                   </tr>
-                ) : currentItems.length === 0 ? (
+                ) : users.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="px-6 py-8 text-center">
                       <div className="flex flex-col items-center justify-center">
@@ -444,19 +404,19 @@ export const UsersTable = () => {
                     </td>
                   </tr>
                 ) : (
-                  currentItems.map((user) => (
+                  users.map((user: IUser) => (
                     <tr
-                      key={user.id}
+                      key={user._id}
                       className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150"
                     >
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           <div className="flex-shrink-0 h-10 w-10">
-                            <img
+                            {/* <img
                               className="h-10 w-10 rounded-full object-cover"
                               src={user.avatar}
                               alt=""
-                            />
+                            /> */}
                           </div>
                           <div className="ml-4">
                             <div className="text-sm font-medium text-gray-900 dark:text-white">
@@ -469,15 +429,14 @@ export const UsersTable = () => {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          {getRoleIcon(user.role)}
-                          <span className="ml-2 text-sm font-medium text-gray-900 dark:text-white capitalize">
-                            {user.role}
-                          </span>
+                        <div className="flex items-center gap-2 ">
+                          {user.roles.map((role) => (
+                            <RoleBadge key={role} role={role} />
+                          ))}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
+                        {/* <div className="flex items-center">
                           {getStatusIcon(user.status)}
                           <span className="ml-2 text-sm font-medium text-gray-900 dark:text-white capitalize">
                             {user.status === "active"
@@ -486,7 +445,7 @@ export const UsersTable = () => {
                               ? "Inactif"
                               : "Suspendu"}
                           </span>
-                        </div>
+                        </div> */}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                         {user.email}
@@ -506,7 +465,6 @@ export const UsersTable = () => {
                           </button>
 
                           <button
-                            onClick={() => setSelectedUser(user)}
                             className="p-2 rounded-lg text-gray-500 hover:text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200"
                             title="Plus d'options"
                           >

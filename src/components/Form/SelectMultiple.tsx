@@ -67,11 +67,11 @@ export default function MultiSelect({
   }, []);
 
   return (
-    <div ref={containerRef} className="relative w-full">
+    <div ref={containerRef} className="relative w-full min-w-sm">
       {/* Input area */}
       <div
         onClick={() => setOpen(!open)}
-        className={`border rounded-lg p-2.5 flex items-center flex-wrap gap-1 min-h-[44px] cursor-pointer 
+        className={`border rounded-lg p-3 flex items-center flex-wrap gap-1 min-h-[44px] cursor-pointer 
          shadow-sm hover:shadow-md transition-shadow duration-150
         ${error ? "border-red-400 bg-red-50" : "border-gray-300 bg-white"}`}
       >

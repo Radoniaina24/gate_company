@@ -1,18 +1,9 @@
 "use client";
 import { FormValues, InputField } from "@/components/Form/InputField";
-import { SelectField } from "@/components/Form/SelectField";
 import MultiSelect from "@/components/Form/SelectMultiple";
 import { useAddUserMutation } from "@/redux/api/userApi";
 import { useFormik } from "formik";
-import {
-  Mail,
-  Lock,
-  User,
-  UserCircle,
-  UserCog,
-  User2Icon,
-  AlertCircle,
-} from "lucide-react";
+import { Mail, Lock, UserCircle, User2Icon, AlertCircle } from "lucide-react";
 import { useState } from "react";
 import * as Yup from "yup";
 

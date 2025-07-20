@@ -6,6 +6,20 @@ export const usersAPI = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
     credentials: "include",
+    paramsSerializer: (params) => {
+      const result = new URLSearchParams();
+      Object.entries(params).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          // Ne serialize que les tableaux non vides
+          if (value.length > 0) {
+            value.forEach((val) => val && result.append(key, val));
+          }
+        } else if (value !== undefined && value !== "") {
+          result.append(key, value as string);
+        }
+      });
+      return result.toString();
+    },
   }),
   keepUnusedDataFor: 30,
   endpoints: (builder) => ({
