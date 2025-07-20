@@ -58,15 +58,17 @@ type SortConfig = {
 export const UsersTable = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [role, setRole] = useState<string[]>([]);
+  const [limit, setLimit] = useState<number>(10);
+  const [page, setPage] = useState<number>(1);
 
   const {
     data,
     error,
     isLoading: loading,
-  } = useGetAllUserQuery({ search: searchTerm, roles: role });
+  } = useGetAllUserQuery({ search: searchTerm, roles: role, page, limit });
   // console.log(data?.users?.meta?.total);
   const users = data?.users?.data;
-  // console.log(role);
+  console.log(data?.users?.meta);
   const OPTIONS = [
     { label: "Manager", value: "manager" },
     { label: "Admin", value: "admin" },
@@ -171,27 +173,15 @@ export const UsersTable = () => {
               </p>
             </div>
             <div className="flex space-x-2">
-              <button
-                onClick={() => handleEdit(user)}
-                className="p-1 text-gray-500 hover:text-red-600"
-                title="Éditer"
-              >
-                <Edit className="h-4 w-4" />
-              </button>
-              <button
+              <EditUser user={user} />
+              {/* <button
                 onClick={() => handleDelete(user._id)}
                 className="p-1 text-gray-500 hover:text-red-600"
                 title="Supprimer"
               >
                 <Trash2 className="h-4 w-4" />
-              </button>
-              <button
-                onClick={() => handleDelete(user._id)}
-                className="p-1 text-gray-500 hover:text-red-600"
-                title="Supprimer"
-              >
-                <Eye className="h-5 w-5" />
-              </button>
+              </button> */}
+              <RemoveUser id={user._id} />
             </div>
           </div>
 
@@ -199,12 +189,6 @@ export const UsersTable = () => {
             <div className="text-gray-500 dark:text-gray-400">
               <div className="text-xs">Créé le</div>
               <div>{formatDate(user.createdAt)}</div>
-            </div>
-            <div className="text-gray-500 dark:text-gray-400">
-              <div className="text-xs">Dernière création</div>
-              <div>
-                {user.createdAt ? formatDate(user.createdAt) : "Jamais"}
-              </div>
             </div>
           </div>
           <div className="flex  justify-end items-center gap-2 mt-5">
@@ -464,7 +448,7 @@ export const UsersTable = () => {
           </div>
 
           {/* Pagination */}
-          {!isLoading && (
+          {!loading && (
             <div className="bg-white px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between border-t border-gray-200 dark:bg-gray-800 dark:border-gray-700">
               {/* Sélecteur d'éléments par page */}
               <div className="mb-3 sm:mb-0 flex items-center">

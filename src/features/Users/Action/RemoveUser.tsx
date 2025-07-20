@@ -30,7 +30,7 @@ export default function RemoveUser({ id }: { id: string }) {
         className="p-2 rounded-lg text-gray-500 hover:text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200"
         title="Supprimer"
       >
-        <Trash2 className="h-5 w-5" />
+        <Trash2 className="h-4 w-4 lg:h-5 lg:w-5" />
       </button>
 
       <Modal

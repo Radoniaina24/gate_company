@@ -14,7 +14,7 @@ export default function EditUser({ user }: { user: IUser }) {
         className="p-2 rounded-lg text-gray-500 hover:text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200"
         title="Éditer"
       >
-        <Edit className="h-5 w-5" />
+        <Edit className="h-4 w-4 lg:h-5 lg:w-5" />
       </button>
 
       <Modal
