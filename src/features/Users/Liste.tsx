@@ -195,32 +195,21 @@ export const UsersTable = () => {
           </div>
 
           <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
-            {/* <div className="flex items-center">
-              {getRoleIcon(user.role)}
-              <span className="ml-2 text-gray-700 dark:text-gray-300 capitalize">
-                {user.role}
-              </span>
-            </div>
-            <div className="flex items-center">
-              {getStatusIcon(user.status)}
-              <span className="ml-2 text-gray-700 dark:text-gray-300 capitalize">
-                {user.status === "active"
-                  ? "Actif"
-                  : user.status === "inactive"
-                  ? "Inactif"
-                  : "Suspendu"}
-              </span>
-            </div> */}
             <div className="text-gray-500 dark:text-gray-400">
               <div className="text-xs">Créé le</div>
               <div>{formatDate(user.createdAt)}</div>
             </div>
             <div className="text-gray-500 dark:text-gray-400">
-              <div className="text-xs">Dernière connexion</div>
+              <div className="text-xs">Dernière création</div>
               <div>
                 {user.createdAt ? formatDate(user.createdAt) : "Jamais"}
               </div>
             </div>
+          </div>
+          <div className="flex  justify-end items-center gap-2 mt-5">
+            {user.roles.map((role) => (
+              <RoleBadge key={role} role={role} />
+            ))}
           </div>
         </div>
       </div>
@@ -277,7 +266,7 @@ export const UsersTable = () => {
                 Chargement...
               </span>
             </div>
-          ) : currentItems.length === 0 ? (
+          ) : users.length === 0 ? (
             <div className="text-center py-8">
               <Search className="h-12 w-12 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-1">

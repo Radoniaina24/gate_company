@@ -24,8 +24,10 @@ const UserCreationSchema = Yup.object().shape({
     .min(1, "Sélectionner au moins un rôle")
     .of(Yup.string().oneOf(OPTIONS.map((o) => o.value))),
 });
-
-export const UserCreationForm = () => {
+interface UserCreationFormProps {
+  onClose: () => void;
+}
+export const UserCreationForm = ({ onClose }: UserCreationFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [addUser] = useAddUserMutation();
   const formik = useFormik<FormValues>({
@@ -47,8 +49,9 @@ export const UserCreationForm = () => {
           password: values.password,
           roles: values.roles,
         }).unwrap();
-        console.log(response);
+        // console.log(response);
         resetForm();
+        onClose();
       } catch (error: any) {
         console.log(error);
       } finally {

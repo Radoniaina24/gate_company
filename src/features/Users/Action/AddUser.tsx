@@ -24,7 +24,7 @@ export default function AddUser() {
         title=" Nouvel utilisateur"
         maxWidth="max-w-lg"
       >
-        <UserCreationForm />
+        <UserCreationForm onClose={() => setIsModalOpen(false)} />
       </Modal>
     </div>
   );
