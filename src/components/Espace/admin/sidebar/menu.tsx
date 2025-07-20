@@ -42,18 +42,19 @@ export const getMenuItems = (userRole: UserRole | string): MenuItem[] => {
     {
       icon: <FaUsers className="text-xl text-red-500" />,
       label: "Utilisateurs",
-      children: [
-        {
-          icon: <IoMdPersonAdd className="text-xl text-red-500" />,
-          label: "Ajouter",
-          href: "/admin/utilisateurs/nouveau",
-        },
-        {
-          icon: <FaAddressBook className="text-xl w-5 h-5 text-red-500" />,
-          label: "Listes",
-          href: "/admin/utilisateurs/listes",
-        },
-      ],
+      href: "/admin/utilisateurs",
+      // children: [
+      //   {
+      //     icon: <IoMdPersonAdd className="text-xl text-red-500" />,
+      //     label: "Ajouter",
+      //     href: "/admin/utilisateurs/nouveau",
+      //   },
+      //   {
+      //     icon: <FaAddressBook className="text-xl w-5 h-5 text-red-500" />,
+      //     label: "Listes",
+      //     href: "/admin/utilisateurs/listes",
+      //   },
+      // ],
     },
     {
       icon: <FaCalendar className="text-xl text-teal-500" />,

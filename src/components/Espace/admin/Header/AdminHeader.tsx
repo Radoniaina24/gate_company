@@ -65,7 +65,7 @@ export default function AdminHeader({
   const notificationRef = useRef<HTMLDivElement>(null);
 
   const user: any = useSelector(selectUser);
-  console.log(user);
+  // console.log(user);
   const handleLogout = async () => {
     try {
       await logoutUser("").unwrap();

@@ -4,10 +4,8 @@ import {
   ChevronDown,
   ChevronUp,
   Search,
-  MoreVertical,
   Edit,
   Trash2,
-  UserPlus,
   ChevronLeft,
   ChevronRight,
   Filter,
@@ -18,9 +16,15 @@ import {
   CheckCircle,
   XCircle,
   PauseCircle,
+  Eye,
+  UserCircle,
 } from "lucide-react";
+import AddUser from "./Action/AddUser";
+import RemoveUser from "./Action/RemoveUser";
 
 interface User {
+  lastName: string;
+  firstName: string;
   id: string;
   email: string;
   role: string;
@@ -70,6 +74,8 @@ export const UsersTable = () => {
       setTimeout(() => {
         const mockUsers: User[] = Array.from({ length: 32 }, (_, i) => ({
           id: `user-${i + 1}`,
+          lastName: `name ${i + 1}`, // 👈 ajouté
+          firstName: `firstname ${i + 1}`, // 👈 ajouté
           email: `user${i + 1}@example.com`,
           role: i % 3 === 0 ? "admin" : i % 2 === 0 ? "editor" : "viewer",
           createdAt: new Date(Date.now() - i * 86400000)
@@ -198,10 +204,10 @@ export const UsersTable = () => {
           <div className="flex justify-between items-start">
             <div>
               <h3 className="text-sm font-medium text-gray-900 dark:text-white truncate">
-                {user.email}
+                {user.lastName} {user.firstName}
               </h3>
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                ID: {user.id}
+                {user.email}
               </p>
             </div>
             <div className="flex space-x-2">
@@ -218,6 +224,13 @@ export const UsersTable = () => {
                 title="Supprimer"
               >
                 <Trash2 className="h-4 w-4" />
+              </button>
+              <button
+                onClick={() => handleDelete(user.id)}
+                className="p-1 text-gray-500 hover:text-red-600"
+                title="Supprimer"
+              >
+                <Eye className="h-5 w-5" />
               </button>
             </div>
           </div>
@@ -274,14 +287,7 @@ export const UsersTable = () => {
             <Filter className="mr-2 h-4 w-4" />
             <span className="hidden sm:inline">Filtres</span>
           </button>
-          <button
-            type="button"
-            className="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-          >
-            <UserPlus className="mr-2 h-4 w-4" />
-            <span className="hidden sm:inline">Nouvel utilisateur</span>
-            <span className="sm:hidden">Ajouter</span>
-          </button>
+          <AddUser />
         </div>
       </div>
 
@@ -338,8 +344,8 @@ export const UsersTable = () => {
                     onClick={() => requestSort("email")}
                   >
                     <div className="flex items-center">
-                      <Mail className="h-4 w-4 mr-2" />
-                      Email
+                      <UserCircle className="h-5 w-5 mr-2" />
+                      Nom Complet
                       {sortConfig?.key === "email" &&
                         (sortConfig.direction === "ascending" ? (
                           <ChevronUp className="ml-1 h-4 w-4" />
@@ -382,6 +388,15 @@ export const UsersTable = () => {
                   </th>
                   <th
                     scope="col"
+                    className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300"
+                  >
+                    <div className="flex items-center">
+                      <Mail className="h-4 w-4 mr-2" />
+                      Mail
+                    </div>
+                  </th>
+                  <th
+                    scope="col"
                     className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer dark:text-gray-300"
                     onClick={() => requestSort("createdAt")}
                   >
@@ -396,15 +411,7 @@ export const UsersTable = () => {
                         ))}
                     </div>
                   </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300"
-                  >
-                    <div className="flex items-center">
-                      <User className="h-4 w-4 mr-2" />
-                      Dernière connexion
-                    </div>
-                  </th>
+
                   <th scope="col" className="relative px-6 py-4">
                     <span className="sr-only">Actions</span>
                   </th>
@@ -453,10 +460,10 @@ export const UsersTable = () => {
                           </div>
                           <div className="ml-4">
                             <div className="text-sm font-medium text-gray-900 dark:text-white">
-                              {user.email}
+                              {user.lastName}
                             </div>
                             <div className="text-sm text-gray-500 dark:text-gray-400">
-                              ID: {user.id}
+                              {user.firstName}
                             </div>
                           </div>
                         </div>
@@ -482,13 +489,14 @@ export const UsersTable = () => {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                        {formatDate(user.createdAt)}
+                        {user.email}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                        {user.lastLogin ? formatDate(user.lastLogin) : "Jamais"}
+                        {/* {user.lastLogin ? formatDate(user.lastLogin) : "Jamais"} */}
+                        {formatDate(user.createdAt)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <div className="flex justify-end space-x-2">
+                        <div className="flex justify-end space-x-0.5">
                           <button
                             onClick={() => handleEdit(user)}
                             className="p-2 rounded-lg text-gray-500 hover:text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200"
@@ -496,20 +504,15 @@ export const UsersTable = () => {
                           >
                             <Edit className="h-5 w-5" />
                           </button>
-                          <button
-                            onClick={() => handleDelete(user.id)}
-                            className="p-2 rounded-lg text-gray-500 hover:text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200"
-                            title="Supprimer"
-                          >
-                            <Trash2 className="h-5 w-5" />
-                          </button>
+
                           <button
                             onClick={() => setSelectedUser(user)}
-                            className="p-2 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200"
+                            className="p-2 rounded-lg text-gray-500 hover:text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200"
                             title="Plus d'options"
                           >
-                            <MoreVertical className="h-5 w-5" />
+                            <Eye className="h-6 w-6" />
                           </button>
+                          <RemoveUser />
                         </div>
                       </td>
                     </tr>
@@ -541,7 +544,7 @@ export const UsersTable = () => {
                   ))}
                 </select>
                 <span className="text-sm text-gray-700 dark:text-gray-400 ml-2">
-                  par page
+                  par page{" "}
                 </span>
               </div>
 
@@ -569,8 +572,11 @@ export const UsersTable = () => {
               <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
                 <div>
                   <p className="text-sm text-gray-700 dark:text-gray-400">
+                    {" "}
                     Affichage{" "}
-                    <span className="font-medium">{indexOfFirstItem + 1}</span>{" "}
+                    <span className="font-medium">
+                      {indexOfFirstItem + 1}
+                    </span>{" "}
                     à{" "}
                     <span className="font-medium">
                       {Math.min(indexOfLastItem, filteredUsers.length)}

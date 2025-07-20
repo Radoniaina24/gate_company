@@ -14,7 +14,6 @@ export const Header = () => {
   const renderHeader = () => {
     if (shouldHideHeader) return null;
     if (isAdminPage) {
-      console.log("tafiditra admin");
       return;
     }
     return <Navbar />;

@@ -67,82 +67,77 @@ export const UserCreationForm = () => {
   });
 
   return (
-    <div className=" mt-30">
-      <div className="max-w-xl mx-auto   bg-white p-6 rounded-lg shadow-md">
-        <h2 className=" text-center text-2xl font-bold text-red-700 mb-6">
-          Créer un utilisateur
-        </h2>
-        <form onSubmit={formik.handleSubmit} className="space-y-4">
-          <InputField
-            name="lastName"
-            label="Nom"
-            type="text"
-            icon={UserCircle}
-            placeholder="John"
-            formik={formik}
-          />
+    <div className="">
+      <form onSubmit={formik.handleSubmit} className="space-y-4">
+        <InputField
+          name="lastName"
+          label="Nom"
+          type="text"
+          icon={UserCircle}
+          placeholder="John"
+          formik={formik}
+        />
 
-          <InputField
-            name="firstName"
-            label="Prénom"
-            type="text"
-            icon={User2Icon}
-            placeholder="Doe"
-            formik={formik}
-          />
+        <InputField
+          name="firstName"
+          label="Prénom"
+          type="text"
+          icon={User2Icon}
+          placeholder="Doe"
+          formik={formik}
+        />
 
-          <InputField
-            name="email"
-            label="Email"
-            type="email"
-            icon={Mail}
-            placeholder="email@exemple.com"
-            formik={formik}
-          />
+        <InputField
+          name="email"
+          label="Email"
+          type="email"
+          icon={Mail}
+          placeholder="email@exemple.com"
+          formik={formik}
+        />
 
-          <InputField
-            name="password"
-            label="Mot de passe"
-            type="password"
-            icon={Lock}
-            placeholder="••••••••"
-            showPassword={showPassword}
-            onTogglePassword={() => setShowPassword(!showPassword)}
-            formik={formik}
-          />
+        <InputField
+          name="password"
+          label="Mot de passe"
+          type="password"
+          icon={Lock}
+          placeholder="••••••••"
+          showPassword={showPassword}
+          onTogglePassword={() => setShowPassword(!showPassword)}
+          formik={formik}
+        />
 
-          {/* <SelectField
+        {/* <SelectField
             name="role"
             label="Rôle"
             icon={User}
             formik={formik}
             options={roleOptions}
           /> */}
-          <div className="space-y-2">
-            <h1 className="text-red-700 text-sm">Roles</h1>
-            <MultiSelect
-              options={OPTIONS}
-              placeholder="Choisir un ou plusieurs rôles"
-              value={formik.values.roles}
-              onChange={(vals) => formik.setFieldValue("roles", vals)}
-              error={Boolean(formik.errors.roles && formik.touched.roles)}
-            />
-            {formik.errors.roles && formik.touched.roles && (
-              <div className="text-red-600 text-sm flex gap-1 items-center ">
-                <AlertCircle className="h-4 w-4" /> {formik.errors.roles}
-              </div>
-            )}
-          </div>
+        <div className="space-y-2">
+          <h1 className="text-red-700 text-sm">Roles</h1>
+          <MultiSelect
+            options={OPTIONS}
+            placeholder="Choisir un ou plusieurs rôles"
+            value={formik.values.roles}
+            onChange={(vals) => formik.setFieldValue("roles", vals)}
+            error={Boolean(formik.errors.roles && formik.touched.roles)}
+          />
+          {formik.errors.roles && formik.touched.roles && (
+            <div className="text-red-600 text-sm flex gap-1 items-center ">
+              <AlertCircle className="h-4 w-4" /> {formik.errors.roles}
+            </div>
+          )}
+        </div>
 
-          <button
-            type="submit"
-            className="w-full bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded-lg font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-            disabled={formik.isSubmitting}
-          >
-            {formik.isSubmitting ? "Création..." : "Créer l'utilisateur"}
-          </button>
-        </form>
-      </div>
+        <button
+          type="submit"
+          className="w-full bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded-lg font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+          disabled={formik.isSubmitting}
+        >
+          {formik.isSubmitting ? "Création..." : "Créer l'utilisateur"}
+        </button>
+      </form>
     </div>
   );
 };
