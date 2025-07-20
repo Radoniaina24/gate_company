@@ -1,18 +1,20 @@
 import DeleteConfirmation from "@/components/Form/DeleteConfirmation";
 import Modal from "@/components/Form/Modal";
+import { useDeleteUserMutation } from "@/redux/api/userApi";
 import { Trash2 } from "lucide-react";
 import React, { useState } from "react";
 
-export default function RemoveUser() {
+export default function RemoveUser({ id }: { id: string }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const [deleteUser] = useDeleteUserMutation();
 
   const handleConfirmDelete = async () => {
     setLoading(true);
     try {
       // Simuler une requête
-      await new Promise((res) => setTimeout(res, 2000));
-      console.log("Élément supprimé");
+      await deleteUser(id).unwrap();
       setIsModalOpen(false);
     } catch (error) {
       console.error("Erreur lors de la suppression");

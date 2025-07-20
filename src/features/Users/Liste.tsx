@@ -25,6 +25,7 @@ import { useGetAllUserQuery } from "@/redux/api/userApi";
 import RoleBadge from "./utils/RoleBadge";
 import FormSelect from "@/components/Form/FormSelect";
 import MultiSelect from "@/components/Form/SelectMultiple";
+import EditUser from "./Action/EditUser";
 
 interface User {
   lastName: string;
@@ -57,7 +58,7 @@ type SortConfig = {
 export const UsersTable = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [role, setRole] = useState<string[]>([]);
-  console.log(role);
+
   const {
     data,
     error,
@@ -444,22 +445,15 @@ export const UsersTable = () => {
                         {formatDate(user.createdAt)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <div className="flex justify-end space-x-0.5">
-                          <button
-                            onClick={() => handleEdit(user)}
-                            className="p-2 rounded-lg text-gray-500 hover:text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200"
-                            title="Éditer"
-                          >
-                            <Edit className="h-5 w-5" />
-                          </button>
-
+                        <div className="flex space-x-0.5">
+                          <EditUser user={user} />
                           <button
                             className="p-2 rounded-lg text-gray-500 hover:text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200"
                             title="Plus d'options"
                           >
                             <Eye className="h-6 w-6" />
                           </button>
-                          <RemoveUser />
+                          <RemoveUser id={user._id} />
                         </div>
                       </td>
                     </tr>

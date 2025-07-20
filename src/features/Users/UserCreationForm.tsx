@@ -1,11 +1,12 @@
 "use client";
 import { FormValues, InputField } from "@/components/Form/InputField";
 import MultiSelect from "@/components/Form/SelectMultiple";
-import { useAddUserMutation } from "@/redux/api/userApi";
+import { useAddUserMutation, useUpdateUserMutation } from "@/redux/api/userApi";
 import { useFormik } from "formik";
 import { Mail, Lock, UserCircle, User2Icon, AlertCircle } from "lucide-react";
 import { useState } from "react";
 import * as Yup from "yup";
+import { IUser } from "./Liste";
 
 const OPTIONS = [
   { label: "Manager", value: "manager" },
@@ -26,40 +27,54 @@ const UserCreationSchema = Yup.object().shape({
 });
 interface UserCreationFormProps {
   onClose: () => void;
+  user?: IUser;
 }
-export const UserCreationForm = ({ onClose }: UserCreationFormProps) => {
+export const UserCreationForm = ({ onClose, user }: UserCreationFormProps) => {
+  const initialValues = {
+    lastName: "",
+    firstName: "",
+    email: "",
+    password: "",
+    roles: [],
+  };
+  // console.log(user);
   const [showPassword, setShowPassword] = useState(false);
   const [addUser] = useAddUserMutation();
+  const [updateUser] = useUpdateUserMutation();
   const formik = useFormik<FormValues>({
-    initialValues: {
-      lastName: "",
-      firstName: "",
-      email: "",
-      password: "",
-      roles: [],
-    },
+    initialValues: user ? { ...user, password: "" } : initialValues,
     validationSchema: UserCreationSchema,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       setSubmitting(true);
       try {
-        const response = await addUser({
+        const payload = {
           lastName: values.lastName,
           firstName: values.firstName,
           email: values.email,
           password: values.password,
           roles: values.roles,
-        }).unwrap();
-        // console.log(response);
+        };
+
+        if (user) {
+          await updateUser({ data: payload, id: user._id }).unwrap();
+        } else {
+          await addUser(payload).unwrap();
+        }
         resetForm();
         onClose();
-      } catch (error: any) {
-        console.log(error);
+      } catch (error: unknown) {
+        console.error("Erreur lors de la soumission :", error);
       } finally {
         setSubmitting(false);
       }
     },
   });
-
+  const getButtonText = (isSubmitting: boolean, isEditMode: boolean) => {
+    if (isSubmitting) {
+      return isEditMode ? "Modification..." : "Création...";
+    }
+    return isEditMode ? "Modifier l'utilisateur" : "Créer l'utilisateur";
+  };
   return (
     <div className="">
       <form onSubmit={formik.handleSubmit} className="space-y-4">
@@ -129,7 +144,7 @@ export const UserCreationForm = ({ onClose }: UserCreationFormProps) => {
           className="w-full bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded-lg font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
           disabled={formik.isSubmitting}
         >
-          {formik.isSubmitting ? "Création..." : "Créer l'utilisateur"}
+          {getButtonText(formik.isSubmitting, !!user)}
         </button>
       </form>
     </div>
