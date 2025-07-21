@@ -256,12 +256,12 @@ export const UsersTable = () => {
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <div className="flex space-x-0.5">
                           <EditUser user={user} />
-                          <button
+                          {/* <button
                             className="p-2 rounded-lg text-gray-500 hover:text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200"
                             title="Plus d'options"
                           >
                             <Eye className="h-6 w-6" />
-                          </button>
+                          </button> */}
                           <RemoveUser id={user._id} />
                         </div>
                       </td>
