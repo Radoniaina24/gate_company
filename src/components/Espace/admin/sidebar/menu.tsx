@@ -1,13 +1,13 @@
 import { Users, CircleDollarSignIcon } from "lucide-react";
 import React, { JSX } from "react";
 import {
-  FaAddressBook,
   FaCalendar,
   FaCalendarDay,
   FaCog,
+  FaTasks,
   FaUsers,
 } from "react-icons/fa";
-import { IoMdPersonAdd } from "react-icons/io";
+
 import { MdDashboard } from "react-icons/md";
 import { PiUsersThree } from "react-icons/pi";
 
@@ -55,6 +55,11 @@ export const getMenuItems = (userRole: UserRole | string): MenuItem[] => {
       //     href: "/admin/utilisateurs/listes",
       //   },
       // ],
+    },
+    {
+      icon: <FaTasks className="text-xl text-violet-500" />,
+      label: "Tâches",
+      href: "/admin/tasks",
     },
     {
       icon: <FaCalendar className="text-xl text-teal-500" />,

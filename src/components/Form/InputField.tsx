@@ -14,6 +14,7 @@ export interface FormValues {
   email?: string;
   recaptcha?: string;
   roles?: string[];
+  title?: string;
 }
 
 interface InputFieldProps {
