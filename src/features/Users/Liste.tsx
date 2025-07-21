@@ -55,20 +55,33 @@ type SortConfig = {
   direction: "ascending" | "descending";
 };
 
+export interface PaginationMeta {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}
+
 export const UsersTable = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [role, setRole] = useState<string[]>([]);
   const [limit, setLimit] = useState<number>(10);
-  const [page, setPage] = useState<number>(1);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(10);
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const {
     data,
     error,
     isLoading: loading,
-  } = useGetAllUserQuery({ search: searchTerm, roles: role, page, limit });
+  } = useGetAllUserQuery({
+    search: searchTerm,
+    roles: role,
+    page: currentPage,
+    limit: itemsPerPage,
+  });
   // console.log(data?.users?.meta?.total);
   const users = data?.users?.data;
-  console.log(data?.users?.meta);
+  const paginate: PaginationMeta = data?.users?.meta;
   const OPTIONS = [
     { label: "Manager", value: "manager" },
     { label: "Admin", value: "admin" },
@@ -80,9 +93,6 @@ export const UsersTable = () => {
   // const [users, setUsers] = useState<User[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState<number>(8); // Modifiable maintenant
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -131,8 +141,8 @@ export const UsersTable = () => {
   // Pagination
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = sortedUsers.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(sortedUsers.length / itemsPerPage);
+  const currentItems = users?.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = paginate?.totalPages;
 
   // Fonctions d'action
   const handleEdit = (user: IUser) => {};
@@ -251,7 +261,7 @@ export const UsersTable = () => {
                 Chargement...
               </span>
             </div>
-          ) : users.length === 0 ? (
+          ) : users?.length === 0 ? (
             <div className="text-center py-8">
               <Search className="h-12 w-12 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-1">
@@ -262,7 +272,7 @@ export const UsersTable = () => {
               </p>
             </div>
           ) : (
-            users.map((user: IUser) => <UserCard key={user._id} user={user} />)
+            users?.map((user: IUser) => <UserCard key={user._id} user={user} />)
           )}
         </div>
       ) : (
@@ -363,7 +373,7 @@ export const UsersTable = () => {
                       </div>
                     </td>
                   </tr>
-                ) : users.length === 0 ? (
+                ) : users?.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="px-6 py-8 text-center">
                       <div className="flex flex-col items-center justify-center">
@@ -378,7 +388,7 @@ export const UsersTable = () => {
                     </td>
                   </tr>
                 ) : (
-                  users.map((user: IUser) => (
+                  users?.map((user: IUser) => (
                     <tr
                       key={user._id}
                       className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150"
@@ -449,7 +459,7 @@ export const UsersTable = () => {
 
           {/* Pagination */}
           {!loading && (
-            <div className="bg-white px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between border-t border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+            <div className="bg-white px-4 py-3 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-t border-gray-200 dark:bg-gray-800 dark:border-gray-700">
               {/* Sélecteur d'éléments par page */}
               <div className="mb-3 sm:mb-0 flex items-center">
                 <span className="text-sm text-gray-700 dark:text-gray-400 mr-2">
@@ -494,7 +504,7 @@ export const UsersTable = () => {
                 </button>
               </div>
 
-              <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+              <div className="hidden sm:flex sm:flex-1 gap-2 sm:items-center sm:justify-between">
                 <div>
                   <p className="text-sm text-gray-700 dark:text-gray-400">
                     {" "}
@@ -504,10 +514,9 @@ export const UsersTable = () => {
                     </span>{" "}
                     à{" "}
                     <span className="font-medium">
-                      {Math.min(indexOfLastItem, filteredUsers.length)}
+                      {Math.min(indexOfLastItem, users?.length)}
                     </span>{" "}
-                    sur{" "}
-                    <span className="font-medium">{filteredUsers.length}</span>{" "}
+                    sur <span className="font-medium">{users?.length}</span>{" "}
                     utilisateurs
                   </p>
                 </div>
