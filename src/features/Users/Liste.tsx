@@ -1,43 +1,15 @@
 "use client";
 import { useState, useEffect } from "react";
-import {
-  ChevronDown,
-  ChevronUp,
-  Search,
-  Edit,
-  Trash2,
-  ChevronLeft,
-  ChevronRight,
-  Filter,
-  User,
-  Mail,
-  Shield,
-  Clock,
-  CheckCircle,
-  XCircle,
-  PauseCircle,
-  Eye,
-  UserCircle,
-} from "lucide-react";
+import { Search, Mail, Shield, Clock, Eye, UserCircle } from "lucide-react";
 import AddUser from "./Action/AddUser";
 import RemoveUser from "./Action/RemoveUser";
 import { useGetAllUserQuery } from "@/redux/api/userApi";
 import RoleBadge from "./utils/RoleBadge";
-import FormSelect from "@/components/Form/FormSelect";
-import MultiSelect from "@/components/Form/SelectMultiple";
 import EditUser from "./Action/EditUser";
-
-interface User {
-  lastName: string;
-  firstName: string;
-  id: string;
-  email: string;
-  role: string;
-  createdAt: string;
-  status: "active" | "inactive" | "suspended";
-  lastLogin?: string;
-  avatar?: string;
-}
+import { UserCard } from "./UserCardMobile";
+import MobilePagination from "./MobilePagination";
+import Pagination from "./Pagination";
+import SearchInput from "./SearchInput";
 
 export type UserRole = "employee" | "manager" | "admin";
 export interface IUser {
@@ -49,12 +21,6 @@ export interface IUser {
   createdAt: string;
   updatedAt: string;
 }
-
-type SortConfig = {
-  key: keyof User;
-  direction: "ascending" | "descending";
-};
-
 export interface PaginationMeta {
   page: number;
   limit: number;
@@ -64,41 +30,32 @@ export interface PaginationMeta {
 
 export const UsersTable = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [role, setRole] = useState<string[]>([]);
-  const [limit, setLimit] = useState<number>(10);
-  const [itemsPerPage, setItemsPerPage] = useState<number>(10);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(5);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [isMobile, setIsMobile] = useState(false);
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("fr-FR", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+  };
   const {
     data,
     error,
     isLoading: loading,
   } = useGetAllUserQuery({
     search: searchTerm,
-    roles: role,
     page: currentPage,
     limit: itemsPerPage,
   });
-  // console.log(data?.users?.meta?.total);
+
   const users = data?.users?.data;
   const paginate: PaginationMeta = data?.users?.meta;
-  const OPTIONS = [
-    { label: "Manager", value: "manager" },
-    { label: "Admin", value: "admin" },
-    { label: "Employee", value: "employee" },
-  ];
-
-  //////////////////////////////////////////////////////
-  const [sortConfig, setSortConfig] = useState<SortConfig | null>(null);
-  // const [users, setUsers] = useState<User[]>([]);
-  const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
-
-  const [isLoading, setIsLoading] = useState(true);
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Options pour le nombre d'éléments par page
-  const itemsPerPageOptions = [5, 8, 15, 25, 50];
-
+  const itemsPerPageOptions = [5, 10, 15, 25, 50];
+  const totalPages = paginate?.totalPages;
   // Détection de la taille de l'écran
   useEffect(() => {
     const checkScreenSize = () => {
@@ -109,107 +66,9 @@ export const UsersTable = () => {
     window.addEventListener("resize", checkScreenSize);
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
-
-  const requestSort = (key: keyof User) => {
-    let direction: "ascending" | "descending" = "ascending";
-    if (
-      sortConfig &&
-      sortConfig.key === key &&
-      sortConfig.direction === "ascending"
-    ) {
-      direction = "descending";
-    }
-    setSortConfig({ key, direction });
-  };
-
-  const sortedUsers = [...filteredUsers].sort((a, b) => {
-    if (!sortConfig) return 0;
-
-    const key = sortConfig.key;
-    const direction = sortConfig.direction;
-
-    const aValue = a[key];
-    const bValue = b[key];
-
-    // Gestion des undefined/null
-    if (aValue == null || bValue == null) return 0;
-
-    if (aValue < bValue) return direction === "ascending" ? -1 : 1;
-    if (aValue > bValue) return direction === "ascending" ? 1 : -1;
-    return 0;
-  });
-  // Pagination
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = users?.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = paginate?.totalPages;
-
-  // Fonctions d'action
-  const handleEdit = (user: IUser) => {};
-
-  const handleDelete = (userId: string) => {};
-
-  const handleItemsPerPageChange = (value: number) => {
-    setItemsPerPage(value);
-    setCurrentPage(1); // Réinitialiser à la première page quand on change le nombre d'éléments par page
-  };
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("fr-FR", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    });
-  };
-
-  // Version mobile - Carte utilisateur
-  const UserCard = ({ user }: { user: IUser }) => (
-    <div className="bg-white rounded-lg shadow p-4 mb-3 dark:bg-gray-700">
-      <div className="flex items-start space-x-4">
-        {/* <img
-          className="h-12 w-12 rounded-full object-cover"
-          src={user.avatar}
-          alt=""
-        /> */}
-        <div className="flex-1 min-w-0">
-          <div className="flex justify-between items-start">
-            <div>
-              <h3 className="text-sm font-medium text-gray-900 dark:text-white truncate">
-                {user.lastName} {user.firstName}
-              </h3>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                {user.email}
-              </p>
-            </div>
-            <div className="flex space-x-2">
-              <EditUser user={user} />
-              {/* <button
-                onClick={() => handleDelete(user._id)}
-                className="p-1 text-gray-500 hover:text-red-600"
-                title="Supprimer"
-              >
-                <Trash2 className="h-4 w-4" />
-              </button> */}
-              <RemoveUser id={user._id} />
-            </div>
-          </div>
-
-          <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
-            <div className="text-gray-500 dark:text-gray-400">
-              <div className="text-xs">Créé le</div>
-              <div>{formatDate(user.createdAt)}</div>
-            </div>
-          </div>
-          <div className="flex  justify-end items-center gap-2 mt-5">
-            {user.roles.map((role) => (
-              <RoleBadge key={role} role={role} />
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm]);
 
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-6">
@@ -227,28 +86,12 @@ export const UsersTable = () => {
         </div>
       </div>
 
-      {/* Barre de recherche */}
-      <div className="mb-6 flex gap-5 flex-wrap justify-between">
-        <div className="relative rounded-lg shadow-sm">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Search className="h-5 w-5 text-gray-400" />
-          </div>
-          <input
-            type="text"
-            placeholder="Rechercher un utilisateur..."
-            className="block w-full pl-10 pr-3 py-2 placeholder:text-sm sm:py-3 border border-gray-300 rounded-lg bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder-gray-400"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
-        <div>
-          <MultiSelect
-            options={OPTIONS}
-            placeholder="Role"
-            value={role}
-            onChange={(vals) => setRole(vals)}
-          />
-        </div>
+      <div className="mb-6">
+        <SearchInput
+          value={searchTerm}
+          onChange={setSearchTerm}
+          placeholder="Rechercher un utilisateur..."
+        />
       </div>
 
       {/* Affichage mobile */}
@@ -285,49 +128,28 @@ export const UsersTable = () => {
                   <th
                     scope="col"
                     className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer dark:text-gray-300"
-                    onClick={() => requestSort("email")}
                   >
                     <div className="flex items-center">
                       <UserCircle className="h-5 w-5 mr-2" />
                       Nom Complet
-                      {sortConfig?.key === "email" &&
-                        (sortConfig.direction === "ascending" ? (
-                          <ChevronUp className="ml-1 h-4 w-4" />
-                        ) : (
-                          <ChevronDown className="ml-1 h-4 w-4" />
-                        ))}
                     </div>
                   </th>
                   <th
                     scope="col"
                     className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer dark:text-gray-300"
-                    onClick={() => requestSort("role")}
                   >
                     <div className="flex items-center">
                       <Shield className="h-4 w-4 mr-2" />
                       Rôle
-                      {sortConfig?.key === "role" &&
-                        (sortConfig.direction === "ascending" ? (
-                          <ChevronUp className="ml-1 h-4 w-4" />
-                        ) : (
-                          <ChevronDown className="ml-1 h-4 w-4" />
-                        ))}
                     </div>
                   </th>
                   <th
                     scope="col"
                     className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer dark:text-gray-300"
-                    onClick={() => requestSort("status")}
                   >
                     {/* <div className="flex items-center">
                       <CheckCircle className="h-4 w-4 mr-2" />
                       Statut
-                      {sortConfig?.key === "status" &&
-                        (sortConfig.direction === "ascending" ? (
-                          <ChevronUp className="ml-1 h-4 w-4" />
-                        ) : (
-                          <ChevronDown className="ml-1 h-4 w-4" />
-                        ))}
                     </div> */}
                   </th>
                   <th
@@ -342,17 +164,10 @@ export const UsersTable = () => {
                   <th
                     scope="col"
                     className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer dark:text-gray-300"
-                    onClick={() => requestSort("createdAt")}
                   >
                     <div className="flex items-center">
                       <Clock className="h-4 w-4 mr-2" />
                       Date de création
-                      {sortConfig?.key === "createdAt" &&
-                        (sortConfig.direction === "ascending" ? (
-                          <ChevronUp className="ml-1 h-4 w-4" />
-                        ) : (
-                          <ChevronDown className="ml-1 h-4 w-4" />
-                        ))}
                     </div>
                   </th>
 
@@ -456,157 +271,25 @@ export const UsersTable = () => {
               </tbody>
             </table>
           </div>
-
-          {/* Pagination */}
-          {!loading && (
-            <div className="bg-white px-4 py-3 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-t border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-              {/* Sélecteur d'éléments par page */}
-              <div className="mb-3 sm:mb-0 flex items-center">
-                <span className="text-sm text-gray-700 dark:text-gray-400 mr-2">
-                  Afficher
-                </span>
-                <select
-                  value={itemsPerPage}
-                  onChange={(e) =>
-                    handleItemsPerPageChange(Number(e.target.value))
-                  }
-                  className="block w-20 pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent rounded-lg sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300"
-                >
-                  {itemsPerPageOptions.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-                <span className="text-sm text-gray-700 dark:text-gray-400 ml-2">
-                  par page{" "}
-                </span>
-              </div>
-
-              <div className="flex-1 flex justify-between sm:hidden">
-                <button
-                  onClick={() =>
-                    setCurrentPage((prev) => Math.max(prev - 1, 1))
-                  }
-                  disabled={currentPage === 1}
-                  className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300"
-                >
-                  Précédent
-                </button>
-                <button
-                  onClick={() =>
-                    setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-                  }
-                  disabled={currentPage === totalPages}
-                  className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300"
-                >
-                  Suivant
-                </button>
-              </div>
-
-              <div className="hidden sm:flex sm:flex-1 gap-2 sm:items-center sm:justify-between">
-                <div>
-                  <p className="text-sm text-gray-700 dark:text-gray-400">
-                    {" "}
-                    Affichage{" "}
-                    <span className="font-medium">
-                      {indexOfFirstItem + 1}
-                    </span>{" "}
-                    à{" "}
-                    <span className="font-medium">
-                      {Math.min(indexOfLastItem, users?.length)}
-                    </span>{" "}
-                    sur <span className="font-medium">{users?.length}</span>{" "}
-                    utilisateurs
-                  </p>
-                </div>
-                <div>
-                  <nav
-                    className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
-                    aria-label="Pagination"
-                  >
-                    <button
-                      onClick={() =>
-                        setCurrentPage((prev) => Math.max(prev - 1, 1))
-                      }
-                      disabled={currentPage === 1}
-                      className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300"
-                    >
-                      <span className="sr-only">Précédent</span>
-                      <ChevronLeft className="h-5 w-5" />
-                    </button>
-                    {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                      let pageNum;
-                      if (totalPages <= 5) {
-                        pageNum = i + 1;
-                      } else if (currentPage <= 3) {
-                        pageNum = i + 1;
-                      } else if (currentPage >= totalPages - 2) {
-                        pageNum = totalPages - 4 + i;
-                      } else {
-                        pageNum = currentPage - 2 + i;
-                      }
-                      return (
-                        <button
-                          key={pageNum}
-                          onClick={() => setCurrentPage(pageNum)}
-                          className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
-                            currentPage === pageNum
-                              ? "z-10 bg-red-50 border-red-500 text-red-600 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
-                              : "bg-white border-gray-300 text-gray-500 hover:bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-600"
-                          }`}
-                        >
-                          {pageNum}
-                        </button>
-                      );
-                    })}
-                    {totalPages > 5 && currentPage < totalPages - 2 && (
-                      <span className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300">
-                        ...
-                      </span>
-                    )}
-                    <button
-                      onClick={() =>
-                        setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-                      }
-                      disabled={currentPage === totalPages}
-                      className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300"
-                    >
-                      <span className="sr-only">Suivant</span>
-                      <ChevronRight className="h-5 w-5" />
-                    </button>
-                  </nav>
-                </div>
-              </div>
-            </div>
-          )}
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            loading={loading}
+            itemsPerPage={itemsPerPage}
+            itemsPerPageOptions={itemsPerPageOptions}
+            onPageChange={setCurrentPage}
+            onItemsPerPageChange={setItemsPerPage}
+          />
         </div>
       )}
 
-      {/* Pagination mobile */}
-      {isMobile && !isLoading && currentItems.length > 0 && (
-        <div className="flex justify-between items-center mt-4">
-          <button
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            disabled={currentPage === 1}
-            className="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 disabled:opacity-50 dark:bg-gray-700 dark:text-gray-300"
-          >
-            Précédent
-          </button>
-          <span className="text-sm text-gray-700 dark:text-gray-300">
-            Page {currentPage} sur {totalPages}
-          </span>
-          <button
-            onClick={() =>
-              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-            }
-            disabled={currentPage === totalPages}
-            className="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 disabled:opacity-50 dark:bg-gray-700 dark:text-gray-300"
-          >
-            Suivant
-          </button>
-        </div>
-      )}
+      <MobilePagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        isMobile={isMobile}
+        loading={loading}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 };
