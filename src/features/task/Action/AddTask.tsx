@@ -18,8 +18,8 @@ interface Task {
   responsible: Array<string>;
   title: string;
   description: string;
-  startDate: null; // sérialisé en ISO string côté Next.js
-  endDate: null;
+  startDate: Date | string | null;
+  endDate: Date | string | null;
   status: "";
   //   percentage: number;
   remarks: string;
@@ -140,7 +140,13 @@ export default function AddTask() {
               <div>
                 <h1 className="mb-1">Date de début</h1>
                 <DatePicker
-                  value={values.startDate}
+                  value={
+                    values.startDate instanceof Date
+                      ? values.startDate
+                      : values.startDate
+                      ? new Date(values.startDate)
+                      : null
+                  }
                   onChange={(date) =>
                     setFieldValue("startDate", date?.toISOString())
                   }
@@ -154,7 +160,13 @@ export default function AddTask() {
               <div>
                 <h1 className="mb-1">Date de fin</h1>
                 <DatePicker
-                  value={values.endDate}
+                  value={
+                    values.endDate instanceof Date
+                      ? values.endDate
+                      : values.endDate
+                      ? new Date(values.endDate)
+                      : null
+                  }
                   onChange={(date) =>
                     setFieldValue("endDate", date?.toISOString())
                   }
