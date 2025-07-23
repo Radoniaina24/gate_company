@@ -43,6 +43,17 @@ export const usersAPI = createApi({
       },
       providesTags: ["user"],
     }),
+
+    getAllUserForTasks: builder.query({
+      query: (params) => {
+        return {
+          url: `users/tasks`,
+          method: "GET",
+          params,
+        };
+      },
+      providesTags: ["user"],
+    }),
     getAllUserCandidate: builder.query({
       query: (params) => {
         return {
@@ -128,4 +139,5 @@ export const {
   useDeleteUserCandidateMutation,
   useUpdateUserMutation,
   useDeleteUserMutation,
+  useGetAllUserForTasksQuery,
 } = usersAPI;
