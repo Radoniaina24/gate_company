@@ -29,7 +29,34 @@ export const tasksAPI = createApi({
       },
       invalidatesTags: ["tasks"],
     }),
+
+    updateTask: builder.mutation({
+      query: ({ data, id }) => {
+        return {
+          url: `/tasks/${id}`,
+          method: "PATCH",
+          body: data,
+        };
+      },
+      invalidatesTags: ["tasks"],
+    }),
+
+    deleteTask: builder.mutation({
+      query: (id) => {
+        return {
+          url: `/tasks/${id}`,
+          method: "DELETE",
+          body: id,
+        };
+      },
+      invalidatesTags: ["tasks"],
+    }),
   }),
 });
 
-export const { useGetAllTasksQuery, useAddTasksMutation } = tasksAPI;
+export const {
+  useGetAllTasksQuery,
+  useAddTasksMutation,
+  useDeleteTaskMutation,
+  useUpdateTaskMutation,
+} = tasksAPI;

@@ -12,16 +12,14 @@ import {
   Eye,
   Logs,
   Search,
-  Trash2Icon,
   UserCircle,
-  Filter,
   SortAsc,
-  MoreVertical,
 } from "lucide-react";
 import StatusBadge from "./utils/StatusBadge";
 import Pagination from "../Users/Pagination";
-import { TaskCard } from "./TaskCardMobile";
-import MobilePagination from "../Users/MobilePagination";
+import RemoveTask from "./Action/RemoveTask";
+import EditTask from "./Action/EditTasks";
+import ViewTask from "./Action/ViewTask";
 
 export default function TaskUser() {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -130,15 +128,9 @@ export default function TaskUser() {
             </div>
 
             <div className="flex justify-end space-x-1">
-              <button className="p-2 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors">
-                <Eye className="h-4 w-4" />
-              </button>
-              <button className="p-2 rounded-lg text-gray-400 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors">
-                <Edit className="h-4 w-4" />
-              </button>
-              <button className="p-2 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
-                <Trash2Icon className="h-4 w-4" />
-              </button>
+              <ViewTask task={task} />
+              <EditTask task={task} />
+              <RemoveTask id={task?._id} />
             </div>
           </div>
         ))
@@ -247,15 +239,9 @@ export default function TaskUser() {
                   </td>
                   <td className="px-4 py-4">
                     <div className="flex justify-center space-x-1">
-                      <button className="p-2 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors">
-                        <Eye className="h-4 w-4" />
-                      </button>
-                      <button className="p-2 rounded-lg text-gray-400 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors">
-                        <Edit className="h-4 w-4" />
-                      </button>
-                      <button className="p-2 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
-                        <Trash2Icon className="h-4 w-4" />
-                      </button>
+                      <ViewTask task={task} />
+                      <EditTask task={task} />
+                      <RemoveTask id={task?._id} />
                     </div>
                   </td>
                 </tr>
@@ -380,24 +366,9 @@ export default function TaskUser() {
                   </td>
                   <td className="px-6 py-5">
                     <div className="flex justify-center space-x-1 opacity-60 group-hover:opacity-100 transition-opacity">
-                      <button
-                        className="p-2.5 rounded-xl text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-200 hover:scale-105"
-                        title="Voir les détails"
-                      >
-                        <Eye className="h-4 w-4" />
-                      </button>
-                      <button
-                        className="p-2.5 rounded-xl text-gray-400 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 transition-all duration-200 hover:scale-105"
-                        title="Modifier"
-                      >
-                        <Edit className="h-4 w-4" />
-                      </button>
-                      <button
-                        className="p-2.5 rounded-xl text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200 hover:scale-105"
-                        title="Supprimer"
-                      >
-                        <Trash2Icon className="h-4 w-4" />
-                      </button>
+                      <ViewTask task={task} />
+                      <EditTask task={task} />
+                      <RemoveTask id={task?._id} />
                     </div>
                   </td>
                 </tr>

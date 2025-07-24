@@ -68,7 +68,11 @@ const Modal = ({
       >
         {/* En-tête */}
         {(title || closeButton) && (
-          <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4">
+          <div
+            className={`flex items-center ${
+              title ? "justify-between border-b border-gray-200" : "justify-end"
+            }   px-6 py-4`}
+          >
             {title && (
               <h2
                 id="modal-title"

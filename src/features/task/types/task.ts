@@ -22,6 +22,5 @@ export interface Task {
   startDate: string; // sérialisé en ISO string côté Next.js
   endDate: string;
   status: TaskStatus;
-  percentage: number;
   remarks?: string;
 }
