@@ -1,6 +1,15 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Search, Mail, Shield, Clock, Eye, UserCircle } from "lucide-react";
+import {
+  Search,
+  Mail,
+  Shield,
+  Clock,
+  UserCircle,
+  User,
+  Calendar,
+  ChevronDown,
+} from "lucide-react";
 import AddUser from "./Action/AddUser";
 import RemoveUser from "./Action/RemoveUser";
 import { useGetAllUserQuery } from "@/redux/api/userApi";
@@ -13,7 +22,7 @@ import SearchInput from "./SearchInput";
 
 export type UserRole = "employee" | "manager" | "admin";
 export interface IUser {
-  _id: string; // Identifiant unique MongoDB
+  _id: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -30,18 +39,34 @@ export interface PaginationMeta {
 
 export const UsersTable = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [itemsPerPage, setItemsPerPage] = useState<number>(5);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [isMobile, setIsMobile] = useState(false);
+  const [screenSize, setScreenSize] = useState<"mobile" | "tablet" | "desktop">(
+    "desktop"
+  );
+  const [sortField, setSortField] = useState<string>("createdAt");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("fr-FR", {
-      day: "numeric",
+      day: "2-digit",
       month: "short",
       year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
+
+  const formatDateShort = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("fr-FR", {
+      day: "2-digit",
+      month: "short",
+      year: "2-digit",
+    });
+  };
+
   const {
     data,
     error,
@@ -51,226 +76,406 @@ export const UsersTable = () => {
     page: currentPage,
     limit: itemsPerPage,
   });
-  // console.log(data);
+
   const users = data?.users?.data;
   const paginate: PaginationMeta = data?.users?.meta;
   const itemsPerPageOptions = [5, 10, 15, 25, 50];
   const totalPages = paginate?.totalPages;
-  // Détection de la taille de l'écran
+
+  // Détection responsive améliorée
   useEffect(() => {
     const checkScreenSize = () => {
-      setIsMobile(window.innerWidth < 768);
+      const width = window.innerWidth;
+      if (width < 640) {
+        setScreenSize("mobile");
+      } else if (width < 1024) {
+        setScreenSize("tablet");
+      } else {
+        setScreenSize("desktop");
+      }
     };
 
     checkScreenSize();
     window.addEventListener("resize", checkScreenSize);
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
+
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm, itemsPerPage]);
 
-  return (
-    <div className="px-4 sm:px-6 lg:px-8 py-6">
-      <div className="sm:flex sm:items-center sm:justify-between mb-6">
-        <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
-            Gestion des Utilisateurs
-          </h1>
-          <p className="mt-1 sm:mt-2 text-sm text-gray-600 dark:text-gray-400">
-            {data?.users?.meta?.total} utilisateurs trouvés
-          </p>
-        </div>
-        <div className="mt-3 sm:mt-0 flex space-x-2 sm:space-x-3">
-          <AddUser />
+  const handleSort = (field: string) => {
+    if (sortField === field) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortField(field);
+      setSortOrder("asc");
+    }
+  };
+
+  const LoadingSpinner = () => (
+    <div className="flex justify-center items-center py-12">
+      <div className="relative">
+        <div className="animate-spin rounded-full h-10 w-10 border-4 border-blue-100 border-t-blue-600"></div>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></div>
         </div>
       </div>
+      <span className="ml-3 text-gray-600 dark:text-gray-300 font-medium">
+        Chargement...
+      </span>
+    </div>
+  );
 
-      <div className="mb-6">
-        <SearchInput
-          value={searchTerm}
-          onChange={setSearchTerm}
-          placeholder="Rechercher un utilisateur..."
-        />
+  const EmptyState = () => (
+    <div className="text-center py-16">
+      <div className="mx-auto w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mb-6">
+        <Search className="h-8 w-8 text-gray-400" />
       </div>
+      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+        Aucun utilisateur trouvé
+      </h3>
+      <p className="text-gray-500 dark:text-gray-400 max-w-sm mx-auto">
+        Aucun utilisateur ne correspond à vos critères de recherche. Essayez de
+        modifier votre recherche.
+      </p>
+    </div>
+  );
 
-      {/* Affichage mobile */}
-      {isMobile ? (
-        <div className="space-y-3">
-          {loading ? (
-            <div className="flex justify-center items-center py-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-red-500"></div>
-              <span className="ml-3 text-gray-500 dark:text-gray-400">
-                Chargement...
-              </span>
-            </div>
-          ) : users?.length === 0 ? (
-            <div className="text-center py-8">
-              <Search className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-1">
-                Aucun utilisateur trouvé
-              </h3>
-              <p className="text-gray-500 dark:text-gray-400">
-                Essayez de modifier vos critères de recherche
-              </p>
-            </div>
-          ) : (
-            users?.map((user: IUser) => <UserCard key={user._id} user={user} />)
-          )}
-        </div>
-      ) : (
-        /* Affichage desktop */
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden dark:bg-gray-800 dark:border-gray-700">
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-              <thead className="bg-gray-50 dark:bg-gray-700">
-                <tr>
-                  <th
-                    scope="col"
-                    className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer dark:text-gray-300"
-                  >
-                    <div className="flex items-center">
-                      <UserCircle className="h-5 w-5 mr-2" />
-                      Nom Complet
-                    </div>
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer dark:text-gray-300"
-                  >
-                    <div className="flex items-center">
-                      <Shield className="h-4 w-4 mr-2" />
-                      Rôle
-                    </div>
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer dark:text-gray-300"
-                  >
-                    {/* <div className="flex items-center">
-                      <CheckCircle className="h-4 w-4 mr-2" />
-                      Statut
-                    </div> */}
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300"
-                  >
-                    <div className="flex items-center">
-                      <Mail className="h-4 w-4 mr-2" />
-                      Mail
-                    </div>
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer dark:text-gray-300"
-                  >
-                    <div className="flex items-center">
-                      <Clock className="h-4 w-4 mr-2" />
-                      Date de création
-                    </div>
-                  </th>
-
-                  <th scope="col" className="relative px-6 py-4">
-                    <span className="sr-only">Actions</span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-                {loading ? (
-                  <tr>
-                    <td colSpan={6} className="px-6 py-8 text-center">
-                      <div className="flex justify-center items-center space-x-2">
-                        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-red-500"></div>
-                        <span className="text-gray-500 dark:text-gray-400">
-                          Chargement des utilisateurs...
-                        </span>
-                      </div>
-                    </td>
-                  </tr>
-                ) : users?.length === 0 ? (
-                  <tr>
-                    <td colSpan={6} className="px-6 py-8 text-center">
-                      <div className="flex flex-col items-center justify-center">
-                        <Search className="h-12 w-12 text-gray-400 mb-4" />
-                        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-1">
-                          Aucun utilisateur trouvé
-                        </h3>
-                        <p className="text-gray-500 dark:text-gray-400">
-                          Essayez de modifier vos critères de recherche
-                        </p>
-                      </div>
-                    </td>
-                  </tr>
-                ) : (
-                  users?.map((user: IUser) => (
-                    <tr
-                      key={user._id}
-                      className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150"
-                    >
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          <div className="flex-shrink-0 h-10 w-10">
-                            {/* <img
-                              className="h-10 w-10 rounded-full object-cover"
-                              src={user.avatar}
-                              alt=""
-                            /> */}
-                          </div>
-                          <div className="ml-4">
-                            <div className="text-sm font-medium text-gray-900 dark:text-white">
-                              {user.lastName}
-                            </div>
-                            <div className="text-sm text-gray-500 dark:text-gray-400">
-                              {user.firstName}
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center gap-2 ">
-                          {user.roles.map((role) => (
-                            <RoleBadge key={role} role={role} />
-                          ))}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {/* <div className="flex items-center">
-                          {getStatusIcon(user.status)}
-                          <span className="ml-2 text-sm font-medium text-gray-900 dark:text-white capitalize">
-                            {user.status === "active"
-                              ? "Actif"
-                              : user.status === "inactive"
-                              ? "Inactif"
-                              : "Suspendu"}
-                          </span>
-                        </div> */}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                        {user.email}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                        {/* {user.lastLogin ? formatDate(user.lastLogin) : "Jamais"} */}
-                        {formatDate(user.createdAt)}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <div className="flex space-x-0.5">
-                          <EditUser user={user} />
-                          {/* <button
-                            className="p-2 rounded-lg text-gray-500 hover:text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200"
-                            title="Plus d'options"
-                          >
-                            <Eye className="h-6 w-6" />
-                          </button> */}
-                          <RemoveUser id={user._id} />
-                        </div>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
+  // Vue mobile améliorée
+  const MobileUserCard = ({ user }: { user: IUser }) => (
+    <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-all duration-200 p-4">
+      <div className="flex items-start justify-between mb-3">
+        <div className="flex items-center space-x-3">
+          <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-lg">
+            {user.firstName.charAt(0)}
+            {user.lastName.charAt(0)}
           </div>
+          <div>
+            <h3 className="font-semibold text-gray-900 dark:text-white text-base">
+              {user.firstName} {user.lastName}
+            </h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center">
+              <Mail className="h-3 w-3 mr-1" />
+              {user.email}
+            </p>
+          </div>
+        </div>
+        <div className="flex space-x-1">
+          <EditUser user={user} />
+          <RemoveUser id={user._id} />
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between">
+        <div className="flex flex-wrap gap-1">
+          {user.roles.map((role) => (
+            <RoleBadge key={role} role={role} />
+          ))}
+        </div>
+        <div className="text-xs text-gray-500 dark:text-gray-400 flex items-center">
+          <Calendar className="h-3 w-3 mr-1" />
+          {formatDateShort(user.createdAt)}
+        </div>
+      </div>
+    </div>
+  );
+
+  // Vue tablette
+  const TabletView = () => (
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div className="overflow-x-auto">
+        <table className="min-w-full">
+          <thead className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 border-b border-gray-200 dark:border-gray-600">
+            <tr>
+              <th className="px-4 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-200 uppercase tracking-wider">
+                <div
+                  className="flex items-center cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  onClick={() => handleSort("firstName")}
+                >
+                  <User className="h-4 w-4 mr-2" />
+                  Utilisateur
+                  <ChevronDown
+                    className={`h-4 w-4 ml-1 transition-transform ${
+                      sortField === "firstName" && sortOrder === "desc"
+                        ? "rotate-180"
+                        : ""
+                    }`}
+                  />
+                </div>
+              </th>
+              <th className="px-4 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-200 uppercase tracking-wider">
+                <div className="flex items-center">
+                  <Shield className="h-4 w-4 mr-2" />
+                  Rôle
+                </div>
+              </th>
+              <th className="px-4 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-200 uppercase tracking-wider">
+                <div
+                  className="flex items-center cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  onClick={() => handleSort("createdAt")}
+                >
+                  <Clock className="h-4 w-4 mr-2" />
+                  Créé le
+                  <ChevronDown
+                    className={`h-4 w-4 ml-1 transition-transform ${
+                      sortField === "createdAt" && sortOrder === "desc"
+                        ? "rotate-180"
+                        : ""
+                    }`}
+                  />
+                </div>
+              </th>
+              <th className="px-4 py-4 text-center text-xs font-semibold text-gray-700 dark:text-gray-200 uppercase tracking-wider">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+            {loading ? (
+              <tr>
+                <td colSpan={4} className="px-6 py-8">
+                  <LoadingSpinner />
+                </td>
+              </tr>
+            ) : users?.length === 0 ? (
+              <tr>
+                <td colSpan={4} className="px-6 py-8">
+                  <EmptyState />
+                </td>
+              </tr>
+            ) : (
+              users?.map((user: IUser) => (
+                <tr
+                  key={user._id}
+                  className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-150"
+                >
+                  <td className="px-4 py-4">
+                    <div className="flex items-center">
+                      <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm mr-3">
+                        {user.firstName.charAt(0)}
+                        {user.lastName.charAt(0)}
+                      </div>
+                      <div>
+                        <div className="text-sm font-semibold text-gray-900 dark:text-white">
+                          {user.firstName} {user.lastName}
+                        </div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400 flex items-center">
+                          <Mail className="h-3 w-3 mr-1" />
+                          {user.email}
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-4 py-4">
+                    <div className="flex flex-wrap gap-1">
+                      {user.roles.map((role) => (
+                        <RoleBadge key={role} role={role} />
+                      ))}
+                    </div>
+                  </td>
+                  <td className="px-4 py-4 text-sm text-gray-600 dark:text-gray-300">
+                    {formatDateShort(user.createdAt)}
+                  </td>
+                  <td className="px-4 py-4">
+                    <div className="flex justify-center space-x-1">
+                      <EditUser user={user} />
+                      <RemoveUser id={user._id} />
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+
+  // Vue desktop complète
+  const DesktopView = () => (
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div className="overflow-x-auto">
+        <table className="min-w-full">
+          <thead className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 border-b border-gray-200 dark:border-gray-600">
+            <tr>
+              <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-200 uppercase tracking-wider">
+                <div
+                  className="flex items-center cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors group"
+                  onClick={() => handleSort("firstName")}
+                >
+                  <UserCircle className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
+                  Utilisateur
+                  <ChevronDown
+                    className={`h-4 w-4 ml-2 transition-transform ${
+                      sortField === "firstName" && sortOrder === "desc"
+                        ? "rotate-180"
+                        : ""
+                    }`}
+                  />
+                </div>
+              </th>
+              <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-200 uppercase tracking-wider">
+                <div className="flex items-center">
+                  <Shield className="h-4 w-4 mr-2" />
+                  Rôles
+                </div>
+              </th>
+              <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-200 uppercase tracking-wider">
+                <div className="flex items-center">
+                  <Mail className="h-4 w-4 mr-2" />
+                  Email
+                </div>
+              </th>
+              <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-200 uppercase tracking-wider">
+                <div
+                  className="flex items-center cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors group"
+                  onClick={() => handleSort("createdAt")}
+                >
+                  <Clock className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform" />
+                  Créé le
+                  <ChevronDown
+                    className={`h-4 w-4 ml-2 transition-transform ${
+                      sortField === "createdAt" && sortOrder === "desc"
+                        ? "rotate-180"
+                        : ""
+                    }`}
+                  />
+                </div>
+              </th>
+              <th className="px-6 py-4 text-center text-xs font-semibold text-gray-700 dark:text-gray-200 uppercase tracking-wider">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+            {loading ? (
+              <tr>
+                <td colSpan={5} className="px-6 py-8">
+                  <LoadingSpinner />
+                </td>
+              </tr>
+            ) : users?.length === 0 ? (
+              <tr>
+                <td colSpan={5} className="px-6 py-8">
+                  <EmptyState />
+                </td>
+              </tr>
+            ) : (
+              users?.map((user: IUser) => (
+                <tr
+                  key={user._id}
+                  className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all duration-200 group"
+                >
+                  <td className="px-6 py-4">
+                    <div className="flex items-center">
+                      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-lg shadow-md group-hover:shadow-lg transition-shadow">
+                        {user.firstName.charAt(0)}
+                        {user.lastName.charAt(0)}
+                      </div>
+                      <div className="ml-4">
+                        <div className="text-sm font-semibold text-gray-900 dark:text-white">
+                          {user.firstName} {user.lastName}
+                        </div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400">
+                          Utilisateur #{user._id.slice(-6)}
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex flex-wrap gap-2">
+                      {user.roles.map((role) => (
+                        <RoleBadge key={role} role={role} />
+                      ))}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="text-sm text-gray-600 dark:text-gray-300 flex items-center">
+                      <Mail className="h-4 w-4 mr-2 text-gray-400" />
+                      {user.email}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">
+                    <div className="flex items-center">
+                      <Calendar className="h-4 w-4 mr-2 text-gray-400" />
+                      {formatDate(user.createdAt)}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex justify-center space-x-2">
+                      <EditUser user={user} />
+                      <RemoveUser id={user._id} />
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="px-4 sm:px-6 lg:px-8 py-6 ">
+        {/* En-tête amélioré */}
+        <div className="mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+            <div className="mb-4 sm:mb-0">
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
+                Gestion des Utilisateurs
+              </h1>
+              <div className="mt-2 flex items-center text-sm text-gray-600 dark:text-gray-400">
+                <div className="flex items-center mr-6">
+                  <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                  {data?.users?.meta?.total || 0} utilisateurs
+                </div>
+                {/* <div className="flex items-center">
+                  <Clock className="h-4 w-4 mr-1" />
+                  Dernière mise à jour il y a 2 min
+                </div> */}
+              </div>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <AddUser />
+            </div>
+          </div>
+        </div>
+
+        {/* Barre de recherche améliorée */}
+        <div className="mb-6 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4">
+          <SearchInput
+            value={searchTerm}
+            onChange={setSearchTerm}
+            placeholder="Rechercher par nom, email..."
+          />
+        </div>
+
+        {/* Contenu adaptatif */}
+        {screenSize === "mobile" ? (
+          <div className="space-y-4">
+            {loading ? (
+              <div className="bg-white dark:bg-gray-800 rounded-xl p-8">
+                <LoadingSpinner />
+              </div>
+            ) : users?.length === 0 ? (
+              <div className="bg-white dark:bg-gray-800 rounded-xl p-8">
+                <EmptyState />
+              </div>
+            ) : (
+              users?.map((user: IUser) => (
+                <MobileUserCard key={user._id} user={user} />
+              ))
+            )}
+          </div>
+        ) : screenSize === "tablet" ? (
+          <TabletView />
+        ) : (
+          <DesktopView />
+        )}
+        <div className="mt-6">
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
@@ -281,15 +486,7 @@ export const UsersTable = () => {
             onItemsPerPageChange={setItemsPerPage}
           />
         </div>
-      )}
-
-      <MobilePagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        isMobile={isMobile}
-        loading={loading}
-        onPageChange={setCurrentPage}
-      />
+      </div>
     </div>
   );
 };
