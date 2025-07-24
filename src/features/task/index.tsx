@@ -20,6 +20,7 @@ import Pagination from "../Users/Pagination";
 import RemoveTask from "./Action/RemoveTask";
 import EditTask from "./Action/EditTasks";
 import ViewTask from "./Action/ViewTask";
+import { useTaskEvents } from "@/hooks/useTaskEvents";
 
 export default function TaskUser() {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -27,17 +28,16 @@ export default function TaskUser() {
   const [isTablet, setIsTablet] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const {
-    data,
-    error,
-    isLoading: loading,
-  } = useGetAllTasksQuery({
+
+  const queryParams = {
     search: searchTerm,
     page: currentPage,
     limit: itemsPerPage,
-  });
-  const tasks: Array<Task> = data?.tasks?.data;
-
+  };
+  const { data, error, isLoading: loading } = useGetAllTasksQuery(queryParams);
+  useTaskEvents(queryParams);
+  const tasks: Array<Task> = data?.data?.data;
+  // console.log(data.data);
   const itemsPerPageOptions = [5, 10, 15, 25, 50];
 
   useEffect(() => {
@@ -392,7 +392,7 @@ export default function TaskUser() {
             <div className="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-400">
               <span className="flex items-center space-x-2">
                 <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span>{data?.tasks?.total || 0} tâches trouvées</span>
+                <span>{data?.data?.total || 0} tâches trouvées</span>
               </span>
               {data?.tasks?.totalPages && (
                 <span className="flex items-center space-x-2">

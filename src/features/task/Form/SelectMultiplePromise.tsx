@@ -191,7 +191,7 @@ export default function UserMultiSelect({
         )}
 
         {/* Users list */}
-        {!loading && filteredUsers.length > 0
+        {!loading && filteredUsers?.length > 0
           ? filteredUsers.map((user) => (
               <div
                 key={user._id}
