@@ -1,18 +1,18 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import UserMultiSelect, { User } from "../SelectMultiplePromise";
-import FormInput from "../InputField";
-import FormSelect from "../FormSelect";
-
-import FormTextarea from "../TextArea";
 
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { TiptapEditor } from "../Titptap";
 import Modal from "@/components/Form/Modal";
-import DatePicker from "../DatePicker";
 import { FaTasks } from "react-icons/fa";
 import { useGetAllUserForTasksQuery } from "@/redux/api/userApi";
+import { useAddTasksMutation } from "@/redux/api/taskApi";
+import FormInput from "../Form/InputField";
+import UserMultiSelect from "../Form/SelectMultiplePromise";
+import FormSelect from "../Form/FormSelect";
+import DatePicker from "../Form/DatePicker";
+import { TiptapEditor } from "../Form/Titptap";
+import FormTextarea from "../Form/TextArea";
 
 interface Task {
   responsible: Array<string>;
@@ -26,6 +26,7 @@ interface Task {
 }
 export default function AddTask() {
   const [open, setOpen] = useState<boolean>(false);
+  const [addTask] = useAddTasksMutation();
 
   const { data, isLoading } = useGetAllUserForTasksQuery("");
   //   console.log(data);
@@ -67,13 +68,29 @@ export default function AddTask() {
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: taskSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values, { setSubmitting, resetForm }) => {
+      setSubmitting(true);
+      try {
+        // console.log(values);
+        const res = await addTask(values).unwrap();
+        // console.log(res);
+        resetForm();
+        setOpen(false);
+      } catch (error: unknown) {
+        console.error("Erreur lors de la soumission :", error);
+      } finally {
+        setSubmitting(false);
+      }
     },
   });
 
   const { values, errors, touched, handleChange, setFieldValue } = formik;
-  // console.log(values.remarks);
+  const getButtonText = (isSubmitting: boolean, isEditMode: boolean) => {
+    if (isSubmitting) {
+      return isEditMode ? "Modification..." : "Création...";
+    }
+    return isEditMode ? "Modifier " : "Enregistrer";
+  };
   return (
     <div>
       <button
@@ -102,7 +119,7 @@ export default function AddTask() {
                 id="title"
                 value={values.title}
                 onChange={handleChange}
-                placeholder="taché numéro 1"
+                placeholder="tâche numéro 1"
                 error={errors.title}
                 touched={touched.title}
               />
@@ -215,8 +232,9 @@ export default function AddTask() {
               <button
                 type="submit"
                 className="px-4 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700"
+                disabled={formik.isSubmitting}
               >
-                Enregistrer
+                {getButtonText(formik.isSubmitting, false)}
               </button>
             </div>
           </div>

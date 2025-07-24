@@ -51,7 +51,7 @@ export const UsersTable = () => {
     page: currentPage,
     limit: itemsPerPage,
   });
-
+  // console.log(data);
   const users = data?.users?.data;
   const paginate: PaginationMeta = data?.users?.meta;
   const itemsPerPageOptions = [5, 10, 15, 25, 50];
