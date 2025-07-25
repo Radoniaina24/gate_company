@@ -1,4 +1,4 @@
-import { Users, CircleDollarSignIcon } from "lucide-react";
+import { Users, CircleDollarSignIcon, Building } from "lucide-react";
 import React, { JSX } from "react";
 import {
   FaCalendar,
@@ -65,6 +65,11 @@ export const getMenuItems = (userRole: UserRole | string): MenuItem[] => {
       icon: <FaCalendar className="text-xl text-teal-500" />,
       label: "Planning",
       href: "/admin",
+    },
+    {
+      icon: <Building className="text-xl text-blue-500" />,
+      label: "Departement",
+      href: "/admin/department",
     },
     {
       icon: <FaCalendarDay className="text-xl text-yellow-500" />,

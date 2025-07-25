@@ -299,7 +299,7 @@ const TabNavigation: React.FC<{
   departmentsCount: number;
   servicesCount: number;
 }> = ({ activeTab, setActiveTab, departmentsCount, servicesCount }) => (
-  <div className="relative bg-white/90 backdrop-blur-xl border border-red-200 rounded-2xl shadow-2xl overflow-hidden">
+  <div className="relative bg-white/90 backdrop-blur-xl border border-red-200 rounded-2xl shadow-xl overflow-hidden">
     <div className="flex">
       <TabButton
         isActive={activeTab === "departments"}
@@ -328,7 +328,7 @@ const TabButton: React.FC<{
 }> = ({ isActive, onClick, icon, label, count }) => (
   <button
     onClick={onClick}
-    className={`flex-1 py-6 px-8 font-semibold text-md transition-all duration-300 relative group ${
+    className={`flex-1 py-4 px-6 font-semibold text-md transition-all duration-300 relative group ${
       isActive ? "text-white" : "text-gray-600 hover:text-gray-800"
     }`}
   >
@@ -367,7 +367,7 @@ const Controls: React.FC<{
   activeTab,
   onAdd,
 }) => (
-  <div className="border-t border-red-200 p-6">
+  <div className="py-6 ">
     <div className="flex flex-col lg:flex-row gap-4">
       <SearchInput searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       {activeTab === "services" && (
@@ -395,7 +395,7 @@ const SearchInput: React.FC<{
         placeholder="Rechercher par nom, description ou responsable..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        className="w-full pl-12 pr-4 py-4 bg-transparent text-gray-800 placeholder-gray-500 focus:outline-none"
+        className="w-full pl-12 pr-4 py-3 bg-transparent placeholder:text-sm text-gray-800 placeholder-gray-500 focus:outline-none"
       />
     </div>
   </div>
@@ -413,7 +413,7 @@ const DepartmentFilter: React.FC<{
       onChange={(e) =>
         setSelectedDepartment(e.target.value ? parseInt(e.target.value) : null)
       }
-      className="relative bg-white/70 backdrop-blur-sm border border-red-200 rounded-xl px-4 py-4 text-gray-800 focus:outline-none appearance-none min-w-48"
+      className="relative text-sm bg-white/70 backdrop-blur-sm border border-red-200 rounded-xl px-4 py-3.5 text-gray-800 focus:outline-none appearance-none min-w-48"
     >
       <option value="">Tous les départements</option>
       {departments.map((dept) => (
@@ -431,10 +431,10 @@ const AddButton: React.FC<{
 }> = ({ activeTab, onAdd }) => (
   <button
     onClick={onAdd}
-    className="relative group overflow-hidden bg-gradient-to-r from-red-500 to-red-700 hover:from-red-600 hover:to-red-800 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
+    className="relative group overflow-hidden bg-gradient-to-r from-red-500 to-red-700 hover:from-red-600 hover:to-red-800 text-white px-8 py-3.5 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
   >
     <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-    <div className="relative flex items-center space-x-2">
+    <div className="relative flex text-xs items-center space-x-2">
       <Plus className="w-5 h-5" />
       <span>
         Ajouter {activeTab === "departments" ? "département" : "service"}
@@ -456,7 +456,7 @@ const DepartmentCard: React.FC<{
     style={{ animationDelay: `${index * 100}ms` }}
   >
     <div className="absolute -inset-1 bg-gradient-to-r from-red-500 to-amber-500 rounded-2xl opacity-0 group-hover:opacity-30 blur transition-opacity duration-300"></div>
-    <div className="relative bg-white/95 backdrop-blur-xl border border-red-200 rounded-2xl p-6 shadow-2xl hover:shadow-red-500/25 transition-all duration-300">
+    <div className="relative bg-white/95 backdrop-blur-xl border border-red-200 rounded-2xl p-6 shadow-xl hover:shadow-red-500/25 transition-all duration-300">
       <CardHeader
         icon={<Building className="w-6 h-6 text-white" />}
         title={department.name}
@@ -464,7 +464,7 @@ const DepartmentCard: React.FC<{
         onDelete={() => onDelete(department.id)}
         gradient="from-red-400 to-red-600"
       />
-      <p className="text-gray-700 mb-6 leading-relaxed">
+      <p className="text-gray-700 text-sm mb-6 leading-relaxed">
         {department.description}
       </p>
       <CardInfo
@@ -503,7 +503,7 @@ const ServiceCard: React.FC<{
     style={{ animationDelay: `${index * 100}ms` }}
   >
     <div className="absolute -inset-1 bg-gradient-to-r from-amber-500 to-red-500 rounded-2xl opacity-0 group-hover:opacity-30 blur transition-opacity duration-300"></div>
-    <div className="relative bg-white/95 backdrop-blur-xl border border-red-200 rounded-2xl p-6 shadow-2xl hover:shadow-amber-500/25 transition-all duration-300">
+    <div className="relative bg-white/95 backdrop-blur-xl border border-red-200 rounded-2xl p-6 shadow-xl hover:shadow-amber-500/25 transition-all duration-300">
       <CardHeader
         icon={<Users className="w-6 h-6 text-white" />}
         title={service.name}
@@ -511,7 +511,7 @@ const ServiceCard: React.FC<{
         onDelete={() => onDelete(service.id)}
         gradient="from-amber-400 to-amber-600"
       />
-      <p className="text-gray-700 mb-6 leading-relaxed">
+      <p className="text-gray-700 text-sm mb-6 leading-relaxed">
         {service.description}
       </p>
       <CardInfo
@@ -551,11 +551,11 @@ const CardHeader: React.FC<{
         <div
           className={`absolute inset-0 bg-gradient-to-r ${gradient} rounded-xl opacity-20 blur`}
         ></div>
-        <div className={`relative bg-gradient-to-r ${gradient} p-3 rounded-xl`}>
+        <div className={`relative bg-gradient-to-r ${gradient} p-2 rounded-xl`}>
           {icon}
         </div>
       </div>
-      <h3 className="text-xl font-bold text-gray-800">{title}</h3>
+      <h3 className="text-md font-bold text-gray-800">{title}</h3>
     </div>
     <div className="flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
       <button
@@ -997,7 +997,7 @@ const DepartmentServiceManager = () => {
     activeTab === "departments" ? filteredDepartments : filteredServices;
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="min-h-screen bg-white rounded-2xl shadow relative overflow-hidden">
       <div className="relative z-10 p-4 sm:p-6 lg:p-8">
         <div className="max-w-7xl mx-auto">
           {/* Navigation par onglets */}
