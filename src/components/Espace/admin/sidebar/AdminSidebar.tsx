@@ -8,6 +8,7 @@ import Image from "next/image";
 import { getMenuItems } from "./menu";
 import { useSelector } from "react-redux";
 import { selectUser } from "@/redux/features/authSlice";
+import { PopoverTooltip } from "./PopoverTooltip";
 
 interface MenuItem {
   icon?: JSX.Element;
@@ -105,15 +106,17 @@ export default function AdminSidebar({
                     : "text-gray-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:text-gray-900 hover:shadow-sm"
                 }`}
               >
-                <div
-                  className={`${
-                    isActive
-                      ? "text-white"
-                      : "text-gray-500 group-hover:text-blue-600"
-                  } transition-colors duration-200`}
-                >
-                  {item.icon}
-                </div>
+                {!sidebarOpen ? (
+                  <PopoverTooltip content={item.label}>
+                    <div className="text-gray-500 group-hover:text-blue-600 transition-colors duration-200">
+                      {item.icon}
+                    </div>
+                  </PopoverTooltip>
+                ) : (
+                  <div className="text-gray-500 group-hover:text-blue-600 transition-colors duration-200">
+                    {item.icon}
+                  </div>
+                )}
                 {sidebarOpen && (
                   <span
                     className={`font-medium transition-colors duration-200 ${
