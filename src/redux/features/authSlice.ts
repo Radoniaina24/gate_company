@@ -8,12 +8,11 @@ interface Student {
   studyPeriod: string; // Exemple : "Licence 2"
 }
 interface User {
-  id: string;
+  _id: string;
   lastName: string;
   firstName: string;
   email: string;
   role: string;
-  student: Student;
   // Ajoutez d'autres propriétés selon votre modèle utilisateur
 }
 interface AuthState {

@@ -21,6 +21,8 @@ import RemoveTask from "./Action/RemoveTask";
 import EditTask from "./Action/EditTasks";
 import ViewTask from "./Action/ViewTask";
 import { useTaskEvents } from "@/hooks/useTaskEvents";
+import { useSelector } from "react-redux";
+import { selectUser } from "@/redux/features/authSlice";
 
 export default function TaskUser() {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -39,6 +41,10 @@ export default function TaskUser() {
   const tasks: Array<Task> = data?.data?.data;
   // console.log(data.data);
   const itemsPerPageOptions = [5, 10, 15, 25, 50];
+
+  const user: any = useSelector(selectUser);
+  const userId = user?._id || user?.user?._id;
+  console.log(userId);
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -367,8 +373,14 @@ export default function TaskUser() {
                   <td className="px-6 py-5">
                     <div className="flex justify-center space-x-1 opacity-60 group-hover:opacity-100 transition-opacity">
                       <ViewTask task={task} />
-                      <EditTask task={task} />
-                      <RemoveTask id={task?._id} />
+                      {task?.user?._id === userId ? (
+                        <>
+                          <EditTask task={task} />
+                          <RemoveTask id={task?._id} />
+                        </>
+                      ) : (
+                        ""
+                      )}
                     </div>
                   </td>
                 </tr>
