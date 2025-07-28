@@ -1,23 +1,27 @@
 import DeleteConfirmation from "@/components/Form/DeleteConfirmation";
 import Modal from "@/components/Form/Modal";
 import { useDeleteTaskMutation } from "@/redux/api/taskApi";
-import { Trash2, Trash2Icon } from "lucide-react";
+import { Trash2Icon } from "lucide-react";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function RemoveTask({ id }: { id?: string }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-
   const [deleteTask] = useDeleteTaskMutation();
+  const ErrorNotification = (msg: string) => toast.error(msg);
+  const SuccessNotification = (msg: string) => toast.success(msg);
 
   const handleConfirmDelete = async () => {
     setLoading(true);
     try {
       // Simuler une requête
-      await deleteTask(id).unwrap();
+      const res = await deleteTask(id).unwrap();
       setIsModalOpen(false);
-    } catch (error) {
-      console.error("Erreur lors de la suppression");
+      SuccessNotification(res.message);
+    } catch (error: any) {
+      // console.error("Erreur lors de la suppression");
+      ErrorNotification(error.message || "Erreur interne du serveur");
     } finally {
       setLoading(false);
     }

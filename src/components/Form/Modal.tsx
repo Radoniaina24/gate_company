@@ -49,7 +49,7 @@ const Modal = ({
 
   return (
     <div
-      className="fixed inset-0 z-[99999999] flex items-center justify-center px-4 py-6 sm:p-6"
+      className="fixed inset-0 z-[99] flex items-center justify-center px-4 py-6 sm:p-6"
       role="dialog"
       aria-modal="true"
       aria-labelledby={title ? "modal-title" : undefined}

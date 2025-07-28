@@ -15,6 +15,7 @@ import DatePicker from "../Form/DatePicker";
 import { TiptapEditor } from "../Form/Titptap";
 import FormTextarea from "../Form/TextArea";
 import { Edit } from "lucide-react";
+import toast from "react-hot-toast";
 
 interface Task {
   responsible: Array<string>;
@@ -36,6 +37,8 @@ export default function EditTask({ task }: { task: any }) {
   const [open, setOpen] = useState<boolean>(false);
   const [addTask] = useAddTasksMutation();
   const [updateTask] = useUpdateTaskMutation();
+  const ErrorNotification = (msg: string) => toast.error(msg);
+  const SuccessNotification = (msg: string) => toast.success(msg);
 
   const { data, isLoading } = useGetAllUserForTasksQuery("");
   //   console.log(data);
@@ -89,15 +92,17 @@ export default function EditTask({ task }: { task: any }) {
       console.log(task._id);
       try {
         if (task) {
-          await updateTask({ data: values, id: task._id }).unwrap();
-          //   console.log(values);
+          const res = await updateTask({ data: values, id: task._id }).unwrap();
+          SuccessNotification(res.message);
         } else {
-          await addTask(values).unwrap();
+          const res = await addTask(values).unwrap();
+          SuccessNotification(res.message);
         }
         resetForm();
         setOpen(false);
-      } catch (error: unknown) {
-        console.error("Erreur lors de la soumission :", error);
+      } catch (error: any) {
+        // console.error("Erreur lors de la soumission :", error);
+        ErrorNotification(error?.message || "Erreur interne du serveur");
       } finally {
         setSubmitting(false);
       }

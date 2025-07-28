@@ -13,6 +13,7 @@ import FormSelect from "../Form/FormSelect";
 import DatePicker from "../Form/DatePicker";
 import { TiptapEditor } from "../Form/Titptap";
 import FormTextarea from "../Form/TextArea";
+import toast from "react-hot-toast";
 
 interface Task {
   responsible: Array<string>;
@@ -27,7 +28,8 @@ interface Task {
 export default function AddTask() {
   const [open, setOpen] = useState<boolean>(false);
   const [addTask] = useAddTasksMutation();
-
+  const ErrorNotification = (msg: string) => toast.error(msg);
+  const SuccessNotification = (msg: string) => toast.success(msg);
   const { data, isLoading } = useGetAllUserForTasksQuery("");
   //   console.log(data);
   const OPTIONS = [
@@ -76,8 +78,10 @@ export default function AddTask() {
         // console.log(res);
         resetForm();
         setOpen(false);
-      } catch (error: unknown) {
-        console.error("Erreur lors de la soumission :", error);
+        SuccessNotification(res.message);
+      } catch (error: any) {
+        // console.error("Erreur lors de la soumission :", error);
+        ErrorNotification(error.message || "Erreur interne du serveur");
       } finally {
         setSubmitting(false);
       }

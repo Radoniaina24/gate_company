@@ -3,21 +3,25 @@ import Modal from "@/components/Form/Modal";
 import { useDeleteUserMutation } from "@/redux/api/userApi";
 import { Trash2 } from "lucide-react";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function RemoveUser({ id }: { id: string }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const ErrorNotification = (msg: string) => toast.error(msg);
+  const SuccessNotification = (msg: string) => toast.success(msg);
   const [deleteUser] = useDeleteUserMutation();
 
   const handleConfirmDelete = async () => {
     setLoading(true);
     try {
       // Simuler une requête
-      await deleteUser(id).unwrap();
+      const res = await deleteUser(id).unwrap();
       setIsModalOpen(false);
-    } catch (error) {
-      console.error("Erreur lors de la suppression");
+      SuccessNotification(res.message);
+    } catch (error: any) {
+      // console.error("Erreur lors de la suppression");
+      ErrorNotification(error?.message);
     } finally {
       setLoading(false);
     }

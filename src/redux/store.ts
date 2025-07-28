@@ -9,6 +9,7 @@ import { recruiterAPI } from "./api/recruiterApi";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // localStorage par défaut
 import { tasksAPI } from "./api/taskApi";
+import { departmentAPI } from "./api/departmentApi";
 
 // Combine tous tes reducers
 const rootReducer = combineReducers({
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   [recruiterAPI.reducerPath]: recruiterAPI.reducer,
   [usersAPI.reducerPath]: usersAPI.reducer,
   [tasksAPI.reducerPath]: tasksAPI.reducer,
+  [departmentAPI.reducerPath]: departmentAPI.reducer,
 });
 
 // Création du store avec le reducer combiné et persisté
@@ -38,7 +40,8 @@ export const store = configureStore({
       candidateAPI.middleware,
       usersAPI.middleware,
       recruiterAPI.middleware,
-      tasksAPI.middleware
+      tasksAPI.middleware,
+      departmentAPI.middleware
     ),
 });
 

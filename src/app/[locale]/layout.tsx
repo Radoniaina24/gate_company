@@ -7,6 +7,7 @@ import { LanguageProvider } from "@/context/LanguageContext";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: "Gate Company",
@@ -37,8 +38,7 @@ export default async function RootLayout({
           <NextIntlClientProvider>
             {" "}
             <LanguageProvider>
-              {" "}
-              <Header /> {children}
+              <Toaster /> <Header /> {children}
             </LanguageProvider>
           </NextIntlClientProvider>
         </ReduxProvider>

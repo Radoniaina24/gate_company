@@ -7,6 +7,7 @@ import { Mail, Lock, UserCircle, User2Icon, AlertCircle } from "lucide-react";
 import { useState } from "react";
 import * as Yup from "yup";
 import { IUser } from "./Liste";
+import toast from "react-hot-toast";
 
 const OPTIONS = [
   { label: "Manager", value: "manager" },
@@ -41,9 +42,12 @@ export const UserCreationForm = ({ onClose, user }: UserCreationFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [addUser] = useAddUserMutation();
   const [updateUser] = useUpdateUserMutation();
+  const ErrorNotification = (msg: string) => toast.error(msg);
+  const SuccessNotification = (msg: string) => toast.success(msg);
   const formik = useFormik<FormValues>({
     initialValues: user ? { ...user, password: "" } : initialValues,
     validationSchema: UserCreationSchema,
+
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       setSubmitting(true);
       try {
@@ -56,14 +60,21 @@ export const UserCreationForm = ({ onClose, user }: UserCreationFormProps) => {
         };
 
         if (user) {
-          await updateUser({ data: payload, id: user._id }).unwrap();
+          const res = await updateUser({
+            data: payload,
+            id: user._id,
+          }).unwrap();
+          SuccessNotification(res.message);
         } else {
-          await addUser(payload).unwrap();
+          const res = await addUser(payload).unwrap();
+          // console.log(res.message);
+          SuccessNotification(res.message);
         }
         resetForm();
         onClose();
-      } catch (error: unknown) {
+      } catch (error: any) {
         console.error("Erreur lors de la soumission :", error);
+        ErrorNotification(error?.message || "Erreur interne du serveur");
       } finally {
         setSubmitting(false);
       }

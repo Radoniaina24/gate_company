@@ -10,6 +10,7 @@ import {
   X,
   Zap,
 } from "lucide-react";
+import AddDepartment from "./Action/AddDepartment";
 
 // Types et interfaces
 interface Department {
@@ -429,18 +430,22 @@ const AddButton: React.FC<{
   activeTab: TabType;
   onAdd: () => void;
 }> = ({ activeTab, onAdd }) => (
-  <button
-    onClick={onAdd}
-    className="relative group overflow-hidden bg-gradient-to-r from-red-500 to-red-700 hover:from-red-600 hover:to-red-800 text-white px-8 py-3.5 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
-  >
-    <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-    <div className="relative flex text-xs items-center space-x-2">
-      <Plus className="w-5 h-5" />
-      <span>
-        Ajouter {activeTab === "departments" ? "département" : "service"}
-      </span>
-    </div>
-  </button>
+  <>
+    {activeTab === "departments" ? (
+      <AddDepartment />
+    ) : (
+      <button
+        onClick={onAdd}
+        className="relative group overflow-hidden bg-gradient-to-r from-red-500 to-red-700 hover:from-red-600 hover:to-red-800 text-white px-8 py-3.5 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
+      >
+        <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <div className="relative flex text-xs items-center space-x-2">
+          <Plus className="w-5 h-5" />
+          <span>Ajouter service</span>
+        </div>
+      </button>
+    )}
+  </>
 );
 
 // Composant pour les cartes de départements
@@ -998,7 +1003,7 @@ const DepartmentServiceManager = () => {
 
   return (
     <div className="min-h-screen bg-white rounded-2xl shadow relative overflow-hidden">
-      <div className="relative z-10 p-4 sm:p-6 lg:p-8">
+      <div className="relative  p-4 sm:p-6 lg:p-8">
         <div className="max-w-7xl mx-auto">
           {/* Navigation par onglets */}
           <div className="relative mb-8">
