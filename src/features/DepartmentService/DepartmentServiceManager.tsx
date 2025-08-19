@@ -11,6 +11,7 @@ import {
   Zap,
 } from "lucide-react";
 import AddDepartment from "./Action/AddDepartment";
+import { useGetAllDepartmentQuery } from "@/redux/api/departmentApi";
 
 // Types et interfaces
 interface Department {
@@ -862,6 +863,9 @@ const ModalActions: React.FC<{
 // Composant principal
 const DepartmentServiceManager = () => {
   const [activeTab, setActiveTab] = useState<TabType>("departments");
+  const { data, isLoading, error } = useGetAllDepartmentQuery("");
+  const departmentsIn = data?.departments;
+  console.log(departmentsIn);
 
   const {
     departments,

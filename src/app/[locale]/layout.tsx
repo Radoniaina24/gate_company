@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/Header/Header";
+
 import { ReduxProvider } from "@/redux/provider";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
@@ -38,7 +38,7 @@ export default async function RootLayout({
           <NextIntlClientProvider>
             {" "}
             <LanguageProvider>
-              <Toaster /> <Header /> {children}
+              <Toaster /> {children}
             </LanguageProvider>
           </NextIntlClientProvider>
         </ReduxProvider>

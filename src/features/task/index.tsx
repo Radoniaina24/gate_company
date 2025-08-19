@@ -8,14 +8,12 @@ import { Task } from "./types/task";
 import {
   CalendarRange,
   ChartNoAxesCombined,
-  Edit,
-  Eye,
   Logs,
   Search,
   UserCircle,
   SortAsc,
 } from "lucide-react";
-import StatusBadge from "./utils/StatusBadge";
+
 import Pagination from "../Users/Pagination";
 import RemoveTask from "./Action/RemoveTask";
 import EditTask from "./Action/EditTasks";
@@ -23,6 +21,7 @@ import ViewTask from "./Action/ViewTask";
 import { useTaskEvents } from "@/hooks/useTaskEvents";
 import { useSelector } from "react-redux";
 import { selectUser } from "@/redux/features/authSlice";
+import { StatusBadge } from "./utils/StatusBadge";
 
 export default function TaskUser() {
   const [searchTerm, setSearchTerm] = useState<string>("");

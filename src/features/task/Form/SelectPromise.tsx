@@ -10,20 +10,20 @@ export interface User {
 }
 
 interface SelectProps {
-  users: User[];
+  data: any;
   placeholder?: string;
   searchPlaceholder?: string;
-  onChange?: (selectedIds: string[]) => void;
-  value?: string[];
+  onChange?: (selectedId: string | null) => void;
+  value?: string | null;
   className?: string;
   loading?: boolean;
   error?: boolean;
 }
 
-export default function UserMultiSelect({
-  users,
-  placeholder = "Sélectionner des utilisateurs",
-  searchPlaceholder = "Rechercher des utilisateurs...",
+export default function SelectPromis({
+  data,
+  placeholder = "Sélectionner un élément",
+  searchPlaceholder = "Rechercher un élémént...",
   onChange,
   value,
   className = "",
@@ -34,38 +34,22 @@ export default function UserMultiSelect({
   const [searchTerm, setSearchTerm] = useState("");
   const containerRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
-
-  const [internalSelected, setInternalSelected] = useState<string[]>([]);
-  const selectedValues = value ?? internalSelected;
+  const [internalSelected, setInternalSelected] = useState<string | null>(null);
+  const selectedValue = value ?? internalSelected;
 
   const filteredUsers = useMemo(() => {
-    if (!searchTerm) return users;
-    return users.filter((user) =>
-      `${user.firstName} ${user.lastName}`
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
+    if (!searchTerm) return data;
+    return data.filter((el: any) =>
+      `${el.name}`.toLowerCase().includes(searchTerm.toLowerCase())
     );
-  }, [users, searchTerm]);
+  }, [data, searchTerm]);
 
-  const isSelected = (userId: string) => selectedValues.includes(userId);
-
-  const update = (updated: string[]) => {
-    if (!value) {
+  const update = (updated: string | null) => {
+    if (value === undefined) {
       setInternalSelected(updated);
     }
     onChange?.(updated);
-  };
-
-  const toggleOption = (userId: string) => {
-    const updated = isSelected(userId)
-      ? selectedValues.filter((v) => v !== userId)
-      : [...selectedValues, userId];
-    update(updated);
-  };
-
-  const removeOption = (userId: string) => {
-    const updated = selectedValues.filter((v) => v !== userId);
-    update(updated);
+    setOpen(false); // fermer le menu dès qu'on sélectionne
   };
 
   const handleDropdownToggle = () => {
@@ -92,8 +76,10 @@ export default function UserMultiSelect({
     };
   }, []);
 
+  const selectedUser = data?.find((u: any) => u._id === selectedValue);
+
   return (
-    <div ref={containerRef} className={`relative w-full  ${className}`}>
+    <div ref={containerRef} className={`relative w-full ${className}`}>
       {/* Input area */}
       <div
         onClick={handleDropdownToggle}
@@ -101,7 +87,7 @@ export default function UserMultiSelect({
           error
             ? "border-red-500 ring-0 ring-red-500"
             : "border-gray-300 ring-1 ring-blue-500"
-        }  rounded-xl p-2 flex items-center flex-wrap gap-1 min-h-[44px] cursor-pointer 
+        } rounded-xl p-2 flex items-center min-h-[44px] cursor-pointer 
         bg-white shadow-sm hover:shadow-md transition-all duration-200
         ${open ? " border-blue-500" : ""} ${
           loading ? "opacity-70 cursor-not-allowed" : ""
@@ -113,34 +99,25 @@ export default function UserMultiSelect({
           </div>
         )}
 
-        {selectedValues.length === 0 && !loading && (
+        {!loading && !selectedUser && (
           <span className="pl-2.5 text-gray-600 text-sm">{placeholder}</span>
         )}
 
-        {!loading &&
-          selectedValues.map((userId) => {
-            const user = users.find((u) => u._id === userId);
-            if (!user) return null;
-
-            return (
-              <span
-                key={userId}
-                className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full flex items-center gap-1 text-xs shadow-sm"
-              >
-                {`${user.firstName} ${user.lastName}`}
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    removeOption(userId);
-                  }}
-                  className="hover:text-red-600 focus:outline-none"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </span>
-            );
-          })}
+        {!loading && selectedUser && (
+          <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full flex items-center gap-1 text-xs shadow-sm">
+            {`${selectedUser.name} - ${selectedUser.Maxduration} jours `}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                update(null);
+              }}
+              className="hover:text-red-600 focus:outline-none"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </span>
+        )}
 
         <div className="ml-auto flex items-center">
           {loading ? (
@@ -186,24 +163,24 @@ export default function UserMultiSelect({
         {loading && (
           <div className="flex flex-col items-center justify-center py-6">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mb-2"></div>
-            <p className="text-sm text-gray-500">Loading users...</p>
+            <p className="text-sm text-gray-500">Chargement...</p>
           </div>
         )}
 
         {/* Users list */}
         {!loading && filteredUsers?.length > 0
-          ? filteredUsers.map((user) => (
+          ? filteredUsers.map((el: any) => (
               <div
-                key={user._id}
-                onClick={() => toggleOption(user._id)}
+                key={el._id}
+                onClick={() => update(el._id)}
                 className={`px-4 py-2 cursor-pointer text-sm hover:bg-blue-50 transition-colors flex items-center ${
-                  isSelected(user._id)
+                  selectedValue === el._id
                     ? "bg-blue-100 text-blue-800 font-medium"
                     : ""
                 }`}
               >
-                <span>{`${user.firstName} ${user.lastName}`}</span>
-                {isSelected(user._id) && (
+                <span>{`${el.name} - ${el.Maxduration} jours `}</span>
+                {selectedValue === el._id && (
                   <span className="ml-auto text-blue-600">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -223,83 +200,12 @@ export default function UserMultiSelect({
             ))
           : !loading && (
               <div className="px-4 py-3 text-sm text-gray-500 text-center">
-                {users.length === 0
-                  ? "Pas d’utilisateurs disponibles"
-                  : "Aucun utilisateur trouvé correspondant à votre recherche"}
+                {data.length === 0
+                  ? "Pas type de congé disponibles"
+                  : "Aucun type trouvé"}
               </div>
             )}
       </div>
     </div>
   );
 }
-
-//Utilisation
-
-// export default function UserSelectionPage() {
-//   const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
-//   const [users, setUsers] = useState<User[]>([]);
-//   const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     // Simulation de chargement asynchrone
-//     const fetchUsers = async () => {
-//       setLoading(true);
-//       try {
-//         // En pratique, vous feriez un appel API ici
-//         await new Promise((resolve) => setTimeout(resolve, 1500));
-
-//         const mockUsers = [
-//           {
-//             _id: "687e103dc85ec61be700835b",
-//             firstName: "Faniry",
-//             lastName: "Ratsimba",
-//           },
-//           {
-//             _id: "687e104ac85ec61be700835e",
-//             firstName: "Radoniaina",
-//             lastName: "Andrianarisoa",
-//           },
-//           {
-//             _id: "687e1055c85ec61be7008361",
-//             firstName: "Tiana",
-//             lastName: "Rajaonarison",
-//           },
-//           {
-//             _id: "687e1064c85ec61be7008365",
-//             firstName: "Luc",
-//             lastName: "Asong",
-//           },
-//         ];
-
-//         setUsers(mockUsers);
-//       } catch (error) {
-//         console.error("Failed to fetch users", error);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchUsers();
-//   }, []);
-//   console.log(selectedUserIds);
-//   return (
-//     <div className="min-h-screen p-8 bg-gray-50">
-//       <div className="max-w-2xl mx-auto">
-//         <h1 className="text-2xl font-bold text-gray-800 mb-6">
-//           Team Selection
-//         </h1>
-
-//         <div className="bg-white p-6 rounded-lg shadow">
-//           <UserMultiSelect
-//             users={users}
-//             placeholder="Sélectionner les membres de l’équipe"
-//             value={selectedUserIds}
-//             onChange={setSelectedUserIds}
-//             loading={loading}
-//           />
-
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }

@@ -74,7 +74,7 @@ export const getMenuItems = (userRole: UserRole | string): MenuItem[] => {
     {
       icon: <FaCalendarDay className="text-xl text-yellow-500" />,
       label: "Congé",
-      href: "/admin",
+      href: "/admin/timeoff",
     },
     {
       icon: <FaCog className="text-xl text-cyan-300" />,

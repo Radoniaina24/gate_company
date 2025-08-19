@@ -43,7 +43,7 @@ export interface TaskData {
 }
 
 function TaskCardView({ task }: { task: TaskData }) {
-  console.log(task);
+  // console.log(task);
 
   const statusOptions = [
     {

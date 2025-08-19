@@ -33,3 +33,16 @@ export function getTaskStatusInfo(status: TaskStatus): StatusInfo {
       return { label: "Inconnu", color: "bg-gray-300 text-black" };
   }
 }
+
+export function getTimeOffStatusInfo(status: string): StatusInfo {
+  switch (status) {
+    case "pending":
+      return { label: "En attente", color: "bg-yellow-400 text-black" };
+    case "approved":
+      return { label: "Approuvé", color: "bg-green-500 text-white" };
+    case "rejected":
+      return { label: "Refusé", color: "bg-red-500 text-white" };
+    default:
+      return { label: "Inconnu", color: "bg-gray-300 text-black" };
+  }
+}

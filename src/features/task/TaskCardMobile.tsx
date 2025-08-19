@@ -1,6 +1,6 @@
 import { Edit, Eye, Trash2, User, Calendar, CalendarCheck } from "lucide-react";
 import { Task } from "./types/task";
-import StatusBadge from "./utils/StatusBadge";
+import { StatusBadge } from "./utils/StatusBadge";
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
